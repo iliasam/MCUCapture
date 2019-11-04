@@ -14,6 +14,8 @@ namespace MCUCapture
     {
         OpenOCDClientClass OpenOCDClientObj;
 
+        int DataReceivedCnt = 0;
+
         //openocd -d2 -f interface/stlink.cfg -f target/stm32f4x.cfg
         public Form1()
         {
@@ -27,6 +29,12 @@ namespace MCUCapture
         void MemoryReadDataForm(byte[] rxData)
         {
             plotControl1.ProcessData(rxData, chkIsBigEndian.Checked);
+
+            DataReceivedCnt++;
+            Invoke((MethodInvoker)(() =>
+            {
+                lblDataReceivedCnt.Text = $"Data Received Cnt: {DataReceivedCnt}";
+            }));
         }
 
         //called from timer
@@ -42,8 +50,8 @@ namespace MCUCapture
         {
             try
             {
-                int dataSize = Convert.ToInt32(txtBoxDataSize.Text);
-                int dataAddress = Convert.ToInt32(txtBoxDataStartAddr.Text, 16);
+                UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
+                UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
                 OpenOCDClientObj.CommandReadMemory(dataAddress, dataSize);
             }
             catch (Exception)
@@ -75,6 +83,29 @@ namespace MCUCapture
         private void btnManualRead_Click(object sender, EventArgs e)
         {
             ReadMemoryData();
+        }
+
+        //wait for buffer end watchpoint
+        private void btnWaitEndWatchpoint_Click(object sender, EventArgs e)
+        {
+            UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
+            UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
+            OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
+        }
+
+        private void btnResumeMCU_Click(object sender, EventArgs e)
+        {
+            OpenOCDClientObj.CommandResumeMCU();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            OpenOCDClientObj.CommandReadWatchpoints();
+        }
+
+        private void btnCleanWatchpoints_Click(object sender, EventArgs e)
+        {
+            OpenOCDClientObj.StartCleanWatchpoints();
         }
     }
 }

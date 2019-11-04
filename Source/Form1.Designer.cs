@@ -35,6 +35,8 @@
             this.lblConnectionSate = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnWaitEndWatchpoint = new System.Windows.Forms.Button();
+            this.chkIsBigEndian = new System.Windows.Forms.CheckBox();
             this.btnManualRead = new System.Windows.Forms.Button();
             this.txtBoxDataSize = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -43,8 +45,11 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.chkIsBigEndian = new System.Windows.Forms.CheckBox();
             this.plotControl1 = new MCUCapture.PlotControl();
+            this.btnResumeMCU = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.btnCleanWatchpoints = new System.Windows.Forms.Button();
+            this.lblDataReceivedCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -53,7 +58,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(14, 206);
+            this.button1.Location = new System.Drawing.Point(10, 274);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -65,7 +70,8 @@
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lblConnectionSate});
+            this.lblConnectionSate,
+            this.lblDataReceivedCnt});
             this.statusStrip1.Location = new System.Drawing.Point(0, 504);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -87,6 +93,10 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.btnCleanWatchpoints);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.btnResumeMCU);
+            this.groupBox1.Controls.Add(this.btnWaitEndWatchpoint);
             this.groupBox1.Controls.Add(this.chkIsBigEndian);
             this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.btnManualRead);
@@ -95,18 +105,39 @@
             this.groupBox1.Controls.Add(this.txtBoxDataStartAddr);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(7, 6);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.groupBox1.Size = new System.Drawing.Size(104, 492);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
             // 
+            // btnWaitEndWatchpoint
+            // 
+            this.btnWaitEndWatchpoint.Location = new System.Drawing.Point(7, 182);
+            this.btnWaitEndWatchpoint.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnWaitEndWatchpoint.Name = "btnWaitEndWatchpoint";
+            this.btnWaitEndWatchpoint.Size = new System.Drawing.Size(87, 28);
+            this.btnWaitEndWatchpoint.TabIndex = 6;
+            this.btnWaitEndWatchpoint.Text = "Wait End WP";
+            this.btnWaitEndWatchpoint.UseVisualStyleBackColor = true;
+            this.btnWaitEndWatchpoint.Click += new System.EventHandler(this.btnWaitEndWatchpoint_Click);
+            // 
+            // chkIsBigEndian
+            // 
+            this.chkIsBigEndian.AutoSize = true;
+            this.chkIsBigEndian.Location = new System.Drawing.Point(10, 120);
+            this.chkIsBigEndian.Name = "chkIsBigEndian";
+            this.chkIsBigEndian.Size = new System.Drawing.Size(77, 17);
+            this.chkIsBigEndian.TabIndex = 5;
+            this.chkIsBigEndian.Text = "Big Endian";
+            this.chkIsBigEndian.UseVisualStyleBackColor = true;
+            // 
             // btnManualRead
             // 
             this.btnManualRead.Location = new System.Drawing.Point(7, 143);
-            this.btnManualRead.Margin = new System.Windows.Forms.Padding(2);
+            this.btnManualRead.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnManualRead.Name = "btnManualRead";
             this.btnManualRead.Size = new System.Drawing.Size(87, 28);
             this.btnManualRead.TabIndex = 4;
@@ -117,11 +148,11 @@
             // txtBoxDataSize
             // 
             this.txtBoxDataSize.Location = new System.Drawing.Point(7, 91);
-            this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBoxDataSize.Name = "txtBoxDataSize";
             this.txtBoxDataSize.Size = new System.Drawing.Size(83, 20);
             this.txtBoxDataSize.TabIndex = 3;
-            this.txtBoxDataSize.Text = "512";
+            this.txtBoxDataSize.Text = "4096";
             // 
             // label2
             // 
@@ -136,7 +167,7 @@
             // txtBoxDataStartAddr
             // 
             this.txtBoxDataStartAddr.Location = new System.Drawing.Point(7, 46);
-            this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtBoxDataStartAddr.Name = "txtBoxDataStartAddr";
             this.txtBoxDataStartAddr.Size = new System.Drawing.Size(83, 20);
             this.txtBoxDataStartAddr.TabIndex = 1;
@@ -160,7 +191,7 @@
             this.tabControl1.Controls.Add(this.tabPagePlot);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(117, 12);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(780, 486);
@@ -170,9 +201,9 @@
             // 
             this.tabPagePlot.Controls.Add(this.plotControl1);
             this.tabPagePlot.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPagePlot.Name = "tabPagePlot";
-            this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPagePlot.Size = new System.Drawing.Size(772, 460);
             this.tabPagePlot.TabIndex = 0;
             this.tabPagePlot.Text = "Plot";
@@ -181,23 +212,13 @@
             // tabPage2
             // 
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tabPage2.Size = new System.Drawing.Size(772, 460);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Testing";
             this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // chkIsBigEndian
-            // 
-            this.chkIsBigEndian.AutoSize = true;
-            this.chkIsBigEndian.Location = new System.Drawing.Point(10, 120);
-            this.chkIsBigEndian.Name = "chkIsBigEndian";
-            this.chkIsBigEndian.Size = new System.Drawing.Size(77, 17);
-            this.chkIsBigEndian.TabIndex = 5;
-            this.chkIsBigEndian.Text = "Big Endian";
-            this.chkIsBigEndian.UseVisualStyleBackColor = true;
             // 
             // plotControl1
             // 
@@ -207,6 +228,45 @@
             this.plotControl1.Name = "plotControl1";
             this.plotControl1.Size = new System.Drawing.Size(768, 456);
             this.plotControl1.TabIndex = 0;
+            // 
+            // btnResumeMCU
+            // 
+            this.btnResumeMCU.Location = new System.Drawing.Point(10, 458);
+            this.btnResumeMCU.Margin = new System.Windows.Forms.Padding(2);
+            this.btnResumeMCU.Name = "btnResumeMCU";
+            this.btnResumeMCU.Size = new System.Drawing.Size(87, 28);
+            this.btnResumeMCU.TabIndex = 7;
+            this.btnResumeMCU.Text = "Resume MCU";
+            this.btnResumeMCU.UseVisualStyleBackColor = true;
+            this.btnResumeMCU.Click += new System.EventHandler(this.btnResumeMCU_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(12, 302);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(73, 24);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "test";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnCleanWatchpoints
+            // 
+            this.btnCleanWatchpoints.Location = new System.Drawing.Point(10, 422);
+            this.btnCleanWatchpoints.Margin = new System.Windows.Forms.Padding(2);
+            this.btnCleanWatchpoints.Name = "btnCleanWatchpoints";
+            this.btnCleanWatchpoints.Size = new System.Drawing.Size(87, 28);
+            this.btnCleanWatchpoints.TabIndex = 9;
+            this.btnCleanWatchpoints.Text = "Clean WP";
+            this.btnCleanWatchpoints.UseVisualStyleBackColor = true;
+            this.btnCleanWatchpoints.Click += new System.EventHandler(this.btnCleanWatchpoints_Click);
+            // 
+            // lblDataReceivedCnt
+            // 
+            this.lblDataReceivedCnt.Name = "lblDataReceivedCnt";
+            this.lblDataReceivedCnt.Size = new System.Drawing.Size(131, 17);
+            this.lblDataReceivedCnt.Text = "Data Received Cnt: N/A";
             // 
             // Form1
             // 
@@ -246,8 +306,13 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPagePlot;
         private System.Windows.Forms.TabPage tabPage2;
-        private PlotControl plotControl1;
         private System.Windows.Forms.CheckBox chkIsBigEndian;
+        private System.Windows.Forms.Button btnWaitEndWatchpoint;
+        private PlotControl plotControl1;
+        private System.Windows.Forms.Button btnResumeMCU;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnCleanWatchpoints;
+        private System.Windows.Forms.ToolStripStatusLabel lblDataReceivedCnt;
     }
 }
 
