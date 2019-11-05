@@ -50,6 +50,7 @@
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lblLinesReceived = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -71,7 +72,8 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblConnectionSate,
-            this.lblDataReceivedCnt});
+            this.lblDataReceivedCnt,
+            this.lblLinesReceived});
             this.statusStrip1.Location = new System.Drawing.Point(0, 504);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -88,8 +90,8 @@
             // lblDataReceivedCnt
             // 
             this.lblDataReceivedCnt.Name = "lblDataReceivedCnt";
-            this.lblDataReceivedCnt.Size = new System.Drawing.Size(131, 17);
-            this.lblDataReceivedCnt.Text = "Data Received Cnt: N/A";
+            this.lblDataReceivedCnt.Size = new System.Drawing.Size(115, 17);
+            this.lblDataReceivedCnt.Text = "Data Received Cnt: 0";
             // 
             // timerUpdateGUI
             // 
@@ -268,6 +270,12 @@
             this.tabPage2.Text = "Testing";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // lblLinesReceived
+            // 
+            this.lblLinesReceived.Name = "lblLinesReceived";
+            this.lblLinesReceived.Size = new System.Drawing.Size(96, 17);
+            this.lblLinesReceived.Text = "Lines Received: 0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -279,7 +287,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "MCUCapture";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -314,6 +321,7 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button btnCleanWatchpoints;
         private System.Windows.Forms.ToolStripStatusLabel lblDataReceivedCnt;
+        private System.Windows.Forms.ToolStripStatusLabel lblLinesReceived;
     }
 }
 

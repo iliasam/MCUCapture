@@ -12,7 +12,8 @@ namespace MCUCapture
 {
     public partial class Form1 : Form
     {
-        OpenOCDClientClass OpenOCDClientObj;
+        //OpenOCDClientClass OpenOCDClientObj;
+        OpenOCDClientClassB OpenOCDClientObj;
 
         int DataReceivedCnt = 0;
 
@@ -20,9 +21,10 @@ namespace MCUCapture
         public Form1()
         {
             InitializeComponent();
-            OpenOCDClientObj = new OpenOCDClientClass();
-            OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
-            
+            //OpenOCDClientObj = new OpenOCDClientClass();
+            //OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
+
+            OpenOCDClientObj = new OpenOCDClientClassB();
         }
 
         //callback from openocd client
@@ -44,6 +46,7 @@ namespace MCUCapture
                 lblConnectionSate.Text = "Connection: OK";
             else
                 lblConnectionSate.Text = "Connection: Fail";
+            lblLinesReceived.Text = $"Lines Received: {OpenOCDClientObj.LinesReceived}";
         }
 
         void ReadMemoryData()
@@ -90,22 +93,22 @@ namespace MCUCapture
         {
             UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
             UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
-            OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
+            //OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
         }
 
         private void btnResumeMCU_Click(object sender, EventArgs e)
         {
-            OpenOCDClientObj.CommandResumeMCU();
+           // OpenOCDClientObj.CommandResumeMCU();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            OpenOCDClientObj.CommandReadWatchpoints();
+           // OpenOCDClientObj.CommandReadWatchpoints();
         }
 
         private void btnCleanWatchpoints_Click(object sender, EventArgs e)
         {
-            OpenOCDClientObj.StartCleanWatchpoints();
+           // OpenOCDClientObj.StartCleanWatchpoints();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
