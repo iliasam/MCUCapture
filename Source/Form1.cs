@@ -25,6 +25,7 @@ namespace MCUCapture
             //OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
 
             OpenOCDClientObj = new OpenOCDClientClassB();
+            OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
         }
 
         //callback from openocd client

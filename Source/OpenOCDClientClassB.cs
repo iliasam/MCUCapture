@@ -19,6 +19,12 @@ namespace MCUCapture
 
         public int LinesReceived = 0;
 
+        UInt32 CmdReadMemorySize = 0;//not good solution
+
+        CmdReadMemoryClass CmdReadMemoryObj = new CmdReadMemoryClass();
+
+        public Action<byte[]> MemoryReadDataCallback;
+
         enum CommandType
         {
             ConnectionStart,
@@ -27,22 +33,24 @@ namespace MCUCapture
             SetWatchpoint,
             CleanWatchpoint,
             Resume,
-            Test,
+            Unknown,
         }
 
-        struct TxCommandItem
-        {
-            public CommandType commandType;
-            public string command;
-        }
+        CommandType AwaitingDataType = CommandType.Unknown;
 
-        Queue<TxCommandItem> TxCommandsQueue = new Queue<TxCommandItem>();
+        Queue<string> TxCommandsQueue = new Queue<string>();
 
         public OpenOCDClientClassB()
         {
 
             BackWorker.RunWorkerCompleted += ClientFail;
             BackWorker.DoWork += DoClientWork;
+            CmdReadMemoryObj.DataParsingEndCallback += DataParsingEndCallback;
+        }
+
+        void DataParsingEndCallback(byte[] data)
+        {
+            MemoryReadDataCallback?.Invoke(data);
         }
 
         public void StartClient()
@@ -71,9 +79,9 @@ namespace MCUCapture
                     {
                         if ((TxCommandsQueue.Count > 0) && ReadyForSend)
                         {
-                            TxCommandItem txCommandItem = TxCommandsQueue.Dequeue();
+                            string txCommand = TxCommandsQueue.Dequeue();
                             ReadyForSend = false;
-                            client.Send(txCommandItem.command + "\r\n");
+                            client.Send(txCommand + "\r\n");
                         }
                     }
                 }
@@ -89,6 +97,23 @@ namespace MCUCapture
         {
             IsConnected = true;
             LinesReceived++;
+
+            if (message.Contains("mdb 0x"))
+            {
+                CmdReadMemoryObj.InitReadMemory(CmdReadMemorySize);
+                AwaitingDataType = CommandType.ReadMemory;
+                return;
+            }
+
+            if (AwaitingDataType == CommandType.ReadMemory)
+            {
+                if (message.Length < 5)
+                {
+                    AwaitingDataType = CommandType.Unknown;
+                    return;
+                }
+                CmdReadMemoryObj.ParseLine(message);
+            }
 
             if (message.Contains(">"))
                 ReadyForSend = true;
@@ -109,9 +134,8 @@ namespace MCUCapture
 
         public void CommandReadMemory(UInt32 startAddrBytes, UInt32 sizeBytes)
         {
-            TxCommandItem command;
-            command.commandType = CommandType.ReadMemory;
-            command.command = $"mdb 0x{startAddrBytes:X8}  {sizeBytes}";
+            CmdReadMemorySize = sizeBytes;
+            string command = $"mdb 0x{startAddrBytes:X8}  {sizeBytes}";
             TxCommandsQueue.Enqueue(command);
         }
 
