@@ -107,5 +107,11 @@ namespace MCUCapture
         {
             OpenOCDClientObj.StartCleanWatchpoints();
         }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            plotControl1.SaveSettings();
+            System.Threading.Thread.Sleep(200);
+        }
     }
 }

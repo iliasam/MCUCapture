@@ -11,6 +11,8 @@ using OxyPlot.WindowsForms;
 using OxyPlot;
 using OxyPlot.Series;
 using OxyPlot.Axes;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MCUCapture
 {
@@ -32,10 +34,15 @@ namespace MCUCapture
 
         DataConversionClass DataConversionObj = new DataConversionClass();
 
+        bool ControlInitialized = false;
+
         public PlotControl()
         {
             InitializeComponent();
             InitDataStructure();
+            LoadSettings();
+            nudValuesCount.Value = (decimal)DataStructureList.Count;
+            ValuesCount = DataStructureList.Count;
             InitChart();
             ChangeProcessedDataSize();
 
@@ -46,6 +53,8 @@ namespace MCUCapture
 
             dataGridView1.DataSource = DataStructureList;
             UpdateItemTotalSize();
+
+            ControlInitialized = true;
         }
 
         public void ProcessData(byte[] rxData, bool isBigEndian)
@@ -192,6 +201,9 @@ namespace MCUCapture
 
         private void nudItemsCount_ValueChanged(object sender, EventArgs e)
         {
+            if (ControlInitialized == false)
+                return;
+
             ValuesCount = (int)nudValuesCount.Value;
             //Update DataStructureList
             while (DataStructureList.Count != ValuesCount)
@@ -251,8 +263,34 @@ namespace MCUCapture
         {
             UpdateItemTotalSize();
         }
+
+        public void LoadSettings()
+        {
+            string path = Application.StartupPath + @"\PlotDataSettings.dat";
+
+            if (File.Exists(path) == false)
+                return;
+
+            Stream stream = File.Open(path, FileMode.Open);
+
+            BinaryFormatter bin = new BinaryFormatter();
+            DataStructureList = (List<DataStructureItem>)bin.Deserialize(stream);
+            stream.Close();
+        }
+
+        public void SaveSettings()
+        {
+            string path = Application.StartupPath + @"\PlotDataSettings.dat";
+
+            FileStream fs = new FileStream(path, FileMode.Create);
+            BinaryFormatter bf = new BinaryFormatter();
+            bf.Serialize(fs, DataStructureList);
+            fs.Close();
+        }
+
     }//end of class
 
+    [Serializable]
     class DataStructureItem
     {
         public string PlotName { get; set; }
