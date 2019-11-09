@@ -43,9 +43,6 @@
     <Reference Include="OxyPlot.WindowsForms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=245eacd6b5d2d338, processorArchitecture=MSIL">
       <HintPath>packages\OxyPlot.WindowsForms.2.0.0\lib\net45\OxyPlot.WindowsForms.dll</HintPath>
     </Reference>
-    <Reference Include="PrimS.Telnet, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>packages\Telnet.0.8.4\lib\net45\PrimS.Telnet.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,7 +68,6 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="OpenOCDClientClassB.cs" />
-    <Compile Include="OpenOCDClientClass.cs" />
     <Compile Include="PlotControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
