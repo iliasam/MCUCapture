@@ -94,12 +94,12 @@ namespace MCUCapture
         {
             UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
             UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
-            //OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
+            OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
         }
 
         private void btnResumeMCU_Click(object sender, EventArgs e)
         {
-           // OpenOCDClientObj.CommandResumeMCU();
+           OpenOCDClientObj.CommandResumeMCU();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -109,7 +109,7 @@ namespace MCUCapture
 
         private void btnCleanWatchpoints_Click(object sender, EventArgs e)
         {
-           // OpenOCDClientObj.StartCleanWatchpoints();
+            OpenOCDClientObj.CommandCleanWatchpoint(OpenOCDClientObj.LastWPAddress);
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)

@@ -25,6 +25,14 @@ namespace MCUCapture
 
         public Action<byte[]> MemoryReadDataCallback;
 
+        public bool MCUHalted = false;
+
+        bool WatchpointEventDetected = false;
+        bool AutoCleanWatchPoint = true;
+
+        //Address of last received Watchpoint
+        public UInt32 LastWPAddress = 0;
+
         enum CommandType
         {
             ConnectionStart,
@@ -34,6 +42,7 @@ namespace MCUCapture
             CleanWatchpoint,
             Resume,
             Unknown,
+            BreakpointEvent,
         }
 
         CommandType AwaitingDataType = CommandType.Unknown;
@@ -81,6 +90,7 @@ namespace MCUCapture
                         {
                             string txCommand = TxCommandsQueue.Dequeue();
                             ReadyForSend = false;
+                            System.Diagnostics.Debug.WriteLine("TX: " + txCommand);
                             client.Send(txCommand + "\r\n");
                         }
                     }
@@ -97,11 +107,31 @@ namespace MCUCapture
         {
             IsConnected = true;
             LinesReceived++;
+            
+            message = message.Replace("\0", string.Empty);
+            if (message.Length == 0)
+                return;
+
+            System.Diagnostics.Debug.WriteLine("RX: " + message);
 
             if (message.Contains("mdb 0x"))
             {
                 CmdReadMemoryObj.InitReadMemory(CmdReadMemorySize);
                 AwaitingDataType = CommandType.ReadMemory;
+                return;
+            }
+
+            if (message.Contains("target not halted"))
+            {
+                MCUHalted = false;
+                return;
+            }
+
+            //received async message that watchpoint event happend
+            if (message.Contains("target halted"))
+            {
+                MCUHalted = true;
+                AwaitingDataType = CommandType.BreakpointEvent;
                 return;
             }
 
@@ -113,9 +143,35 @@ namespace MCUCapture
                     return;
                 }
                 CmdReadMemoryObj.ParseLine(message);
+                return;
+            }
+            else if (AwaitingDataType == CommandType.BreakpointEvent)
+            {
+                if (message.Contains("msp:"))
+                {
+                    System.Diagnostics.Debug.WriteLine("Dtected watpoint event!");
+                    MCUHalted = true;
+                    WatchpointEventDetected = true;
+                    //ReadyForSend = true;
+                    if (AutoCleanWatchPoint)
+                    {
+                        CommandCleanWatchpoint(LastWPAddress);
+                        return;
+                    }
+                }
+            }
+            else if (AwaitingDataType == CommandType.CleanWatchpoint)
+            {
+                //watchpoint is remowed - so we can run MCU
+                if (message.Contains("rwp 0x"))
+                {
+                    AwaitingDataType = CommandType.Unknown;
+                    CommandResumeMCU();
+                    return;
+                }
             }
 
-            if (message.Contains(">"))
+            if (message.Contains(">") && (message.Length < 5))
                 ReadyForSend = true;
         }
 
@@ -131,11 +187,48 @@ namespace MCUCapture
         }
 
         //Commands
-
+        //************************************************************************************
         public void CommandReadMemory(UInt32 startAddrBytes, UInt32 sizeBytes)
         {
             CmdReadMemorySize = sizeBytes;
             string command = $"mdb 0x{startAddrBytes:X8}  {sizeBytes}";
+            TxCommandsQueue.Enqueue(command);
+        }
+
+        //AutoClean - auto clean watchpoint after its event detected
+        public void CommandSetWatchpoint(UInt32 startAddrBytes, bool AutoClean = true)
+        {
+            WatchpointEventDetected = false;
+            LastWPAddress = startAddrBytes;
+            AutoCleanWatchPoint = AutoClean;
+            string command = $"halt 0";//stop mcu for setting watchpoint
+            TxCommandsQueue.Enqueue(command);
+
+            command = $"wp 0x{startAddrBytes:X8}  1 w";//write access, 1 byte
+            TxCommandsQueue.Enqueue(command);
+
+            CommandResumeMCU();//run programm - wait for interrupt
+        }
+
+        public void CommandResumeMCU()
+        {
+            string command = $"resume";//resume mcu from halt
+            TxCommandsQueue.Enqueue(command);
+        }
+
+        public void CommandCleanWatchpoint(UInt32 startAddrBytes)
+        {
+
+            if (startAddrBytes == 0)
+                return;
+            string command;
+
+            //command  = $"halt 0";//stop mcu for setting watchpoint
+            //TxCommandsQueue.Enqueue(command);
+
+            command = $"rwp 0x{startAddrBytes:X8}";//remove watchpoint
+
+            AwaitingDataType = CommandType.CleanWatchpoint;
             TxCommandsQueue.Enqueue(command);
         }
 
