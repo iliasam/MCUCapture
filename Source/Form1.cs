@@ -21,9 +21,6 @@ namespace MCUCapture
         public Form1()
         {
             InitializeComponent();
-            //OpenOCDClientObj = new OpenOCDClientClass();
-            //OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
-
             OpenOCDClientObj = new OpenOCDClientClassB();
             OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
         }
@@ -94,7 +91,8 @@ namespace MCUCapture
         {
             UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
             UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
-            OpenOCDClientObj.CommandSetWatchpoint(dataSize + dataAddress - 4);
+            //OpenOCDClientObj.StartSetWatchpoint(dataSize + dataAddress - 4);
+            OpenOCDClientObj.StartWaitForData(dataAddress, dataSize, dataSize + dataAddress - 4);
         }
 
         private void btnResumeMCU_Click(object sender, EventArgs e)
