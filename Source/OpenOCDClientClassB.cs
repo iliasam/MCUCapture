@@ -36,7 +36,7 @@ namespace MCUCapture
         public bool MCUHalted = false;
 
         bool WatchpointEventDetected = false;
-        bool AutoCleanWatchPoint = true;
+        bool AutoCleanWatchPoint = false;
 
         // Need to capture data when watchpoint event happens
         bool WPCaptureData = false;
@@ -176,7 +176,7 @@ namespace MCUCapture
                     StartSetWatchpoint(SetWPAddress, AutoCleanWatchPoint);
                 }
             }
-            else if (message.Contains("msp:"))
+            else if (message.Contains("msp:") || message.Contains("psp:"))
             {
                 if ((SetWatchpointsState == SetWatchpointsStateType.WaitForWPSet) &&
                     (AwaitingDataType == CommandType.SetWatchpoint))
@@ -244,8 +244,11 @@ namespace MCUCapture
 
         //Commands
         //************************************************************************************
-        public void CommandReadMemory(UInt32 startAddrBytes, UInt32 sizeBytes)
+        public void CommandReadMemory(UInt32 startAddrBytes, UInt32 sizeBytes, bool ManualCall = false)
         {
+            if (ManualCall == false)
+                AutoCleanWatchPoint = false;
+
             CmdReadMemorySize = sizeBytes;
             string command = $"mdb 0x{startAddrBytes:X8}  {sizeBytes}";
             TxCommandsQueue.Enqueue(command);
@@ -268,13 +271,10 @@ namespace MCUCapture
             SetWPAddress = startAddrBytes;
             SetWatchpointsState = SetWatchpointsStateType.Idle;
 
-            string command;
-
             if (MCUHalted == false)
             {
                 SetWatchpointsState = SetWatchpointsStateType.WaitForHalt;
-                command = $"halt 0";//stop mcu for setting watchpoint
-                TxCommandsQueue.Enqueue(command);
+                CommandHaltMCU();
             }
             else
             {
@@ -283,6 +283,12 @@ namespace MCUCapture
             }
                 
             //CommandResumeMCU();//run programm - wait for interrupt
+        }
+
+        public void CommandHaltMCU()
+        {
+            string command = $"halt 0";//stop mcu for setting watchpoint
+            TxCommandsQueue.Enqueue(command);
         }
 
         //AutoClean - auto clean watchpoint after its event detected
