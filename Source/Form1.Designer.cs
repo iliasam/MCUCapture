@@ -34,6 +34,7 @@
             this.lblConnectionSate = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDataReceivedCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLinesReceived = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnHaltMCU = new System.Windows.Forms.Button();
@@ -51,7 +52,6 @@
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -90,6 +90,12 @@
             this.lblLinesReceived.Name = "lblLinesReceived";
             this.lblLinesReceived.Size = new System.Drawing.Size(96, 17);
             this.lblLinesReceived.Text = "Lines Received: 0";
+            // 
+            // lblSelectedELFItem
+            // 
+            this.lblSelectedELFItem.Name = "lblSelectedELFItem";
+            this.lblSelectedELFItem.Size = new System.Drawing.Size(127, 17);
+            this.lblSelectedELFItem.Text = "Selected ELF Item: N/A";
             // 
             // timerUpdateGUI
             // 
@@ -280,12 +286,6 @@
             this.tabPage2.Text = "Testing";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // lblSelectedELFItem
-            // 
-            this.lblSelectedELFItem.Name = "lblSelectedELFItem";
-            this.lblSelectedELFItem.Size = new System.Drawing.Size(127, 17);
-            this.lblSelectedELFItem.Text = "Selected ELF Item: N/A";
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,6 +297,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "MCUCapture";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing_1);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();

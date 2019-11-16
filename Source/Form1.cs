@@ -111,12 +111,6 @@ namespace MCUCapture
             OpenOCDClientObj.CommandHaltMCU();
         }
 
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            plotControl1.SaveSettings();
-            System.Threading.Thread.Sleep(200);
-        }
-
         void OpenELFForm()
         {
             if (ELF_FormObj == null)
@@ -142,6 +136,10 @@ namespace MCUCapture
             OpenELFForm();
         }
 
-
+        private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
+        {
+            plotControl1.SaveSettings();
+            System.Threading.Thread.Sleep(200);
+        }
     }
 }
