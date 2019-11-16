@@ -7,7 +7,7 @@ using ELFSharp.ELF.Sections;
 
 namespace MCUCapture
 {
-    class ELFParserClass
+    public class ELFParserClass
     {
 
         public struct MemoryTableItem
@@ -17,7 +17,7 @@ namespace MCUCapture
             public UInt32 Size;//bytes
         }
 
-        List<MemoryTableItem> MemoryTable = new List<MemoryTableItem>();
+        public List<MemoryTableItem> MemoryTable = new List<MemoryTableItem>();
 
         public void UpdateTableFromFile(string path)
         {

@@ -125,7 +125,16 @@ namespace MCUCapture
             if (ELF_FormObj.IsDisposed)
                 ELF_FormObj = new ELF_Form();
 
+            ELF_FormObj.DataSelectedAction += DataSelectedActionForm;
             ELF_FormObj.Show();
+        }
+
+        //calback from elf selecting window. Called when data selection is complete
+        void DataSelectedActionForm(ELFParserClass.MemoryTableItem selectedItem)
+        {
+            txtBoxDataStartAddr.Text = "0x" + selectedItem.Address.ToString("X");
+            txtBoxDataSize.Text = selectedItem.Size.ToString();
+            lblSelectedELFItem.Text = $"Selected ELF Item: \"{selectedItem.Name}\"";
         }
 
         private void btnTakeDataFromELF_Click(object sender, EventArgs e)

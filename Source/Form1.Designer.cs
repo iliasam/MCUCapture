@@ -36,6 +36,7 @@
             this.lblLinesReceived = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnHaltMCU = new System.Windows.Forms.Button();
             this.btnTakeDataFromELF = new System.Windows.Forms.Button();
             this.btnCleanWatchpoints = new System.Windows.Forms.Button();
             this.btnResumeMCU = new System.Windows.Forms.Button();
@@ -48,9 +49,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePlot = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
-            this.btnHaltMCU = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -63,7 +64,8 @@
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblConnectionSate,
             this.lblDataReceivedCnt,
-            this.lblLinesReceived});
+            this.lblLinesReceived,
+            this.lblSelectedELFItem});
             this.statusStrip1.Location = new System.Drawing.Point(0, 504);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -109,18 +111,30 @@
             this.groupBox1.Controls.Add(this.txtBoxDataStartAddr);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(7, 6);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
             this.groupBox1.Size = new System.Drawing.Size(104, 492);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
             // 
+            // btnHaltMCU
+            // 
+            this.btnHaltMCU.BackColor = System.Drawing.Color.Yellow;
+            this.btnHaltMCU.Location = new System.Drawing.Point(10, 426);
+            this.btnHaltMCU.Margin = new System.Windows.Forms.Padding(2);
+            this.btnHaltMCU.Name = "btnHaltMCU";
+            this.btnHaltMCU.Size = new System.Drawing.Size(87, 28);
+            this.btnHaltMCU.TabIndex = 11;
+            this.btnHaltMCU.Text = "Halt MCU";
+            this.btnHaltMCU.UseVisualStyleBackColor = false;
+            this.btnHaltMCU.Click += new System.EventHandler(this.btnHaltMCU_Click);
+            // 
             // btnTakeDataFromELF
             // 
             this.btnTakeDataFromELF.Location = new System.Drawing.Point(4, 22);
-            this.btnTakeDataFromELF.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnTakeDataFromELF.Margin = new System.Windows.Forms.Padding(2);
             this.btnTakeDataFromELF.Name = "btnTakeDataFromELF";
             this.btnTakeDataFromELF.Size = new System.Drawing.Size(96, 22);
             this.btnTakeDataFromELF.TabIndex = 10;
@@ -131,7 +145,7 @@
             // btnCleanWatchpoints
             // 
             this.btnCleanWatchpoints.Location = new System.Drawing.Point(10, 394);
-            this.btnCleanWatchpoints.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnCleanWatchpoints.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanWatchpoints.Name = "btnCleanWatchpoints";
             this.btnCleanWatchpoints.Size = new System.Drawing.Size(87, 28);
             this.btnCleanWatchpoints.TabIndex = 9;
@@ -142,7 +156,7 @@
             // btnResumeMCU
             // 
             this.btnResumeMCU.Location = new System.Drawing.Point(10, 458);
-            this.btnResumeMCU.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnResumeMCU.Margin = new System.Windows.Forms.Padding(2);
             this.btnResumeMCU.Name = "btnResumeMCU";
             this.btnResumeMCU.Size = new System.Drawing.Size(87, 28);
             this.btnResumeMCU.TabIndex = 7;
@@ -153,7 +167,7 @@
             // btnWaitEndWatchpoint
             // 
             this.btnWaitEndWatchpoint.Location = new System.Drawing.Point(4, 210);
-            this.btnWaitEndWatchpoint.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnWaitEndWatchpoint.Margin = new System.Windows.Forms.Padding(2);
             this.btnWaitEndWatchpoint.Name = "btnWaitEndWatchpoint";
             this.btnWaitEndWatchpoint.Size = new System.Drawing.Size(87, 28);
             this.btnWaitEndWatchpoint.TabIndex = 6;
@@ -174,7 +188,7 @@
             // btnManualRead
             // 
             this.btnManualRead.Location = new System.Drawing.Point(4, 171);
-            this.btnManualRead.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnManualRead.Margin = new System.Windows.Forms.Padding(2);
             this.btnManualRead.Name = "btnManualRead";
             this.btnManualRead.Size = new System.Drawing.Size(87, 28);
             this.btnManualRead.TabIndex = 4;
@@ -185,7 +199,7 @@
             // txtBoxDataSize
             // 
             this.txtBoxDataSize.Location = new System.Drawing.Point(4, 115);
-            this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataSize.Name = "txtBoxDataSize";
             this.txtBoxDataSize.Size = new System.Drawing.Size(83, 20);
             this.txtBoxDataSize.TabIndex = 3;
@@ -204,7 +218,7 @@
             // txtBoxDataStartAddr
             // 
             this.txtBoxDataStartAddr.Location = new System.Drawing.Point(4, 70);
-            this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataStartAddr.Name = "txtBoxDataStartAddr";
             this.txtBoxDataStartAddr.Size = new System.Drawing.Size(83, 20);
             this.txtBoxDataStartAddr.TabIndex = 1;
@@ -228,7 +242,7 @@
             this.tabControl1.Controls.Add(this.tabPagePlot);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(117, 12);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(780, 490);
@@ -238,24 +252,13 @@
             // 
             this.tabPagePlot.Controls.Add(this.plotControl1);
             this.tabPagePlot.Location = new System.Drawing.Point(4, 22);
-            this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2);
             this.tabPagePlot.Name = "tabPagePlot";
-            this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2);
             this.tabPagePlot.Size = new System.Drawing.Size(772, 464);
             this.tabPagePlot.TabIndex = 0;
             this.tabPagePlot.Text = "Plot";
             this.tabPagePlot.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.tabPage2.Size = new System.Drawing.Size(772, 460);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Testing";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // plotControl1
             // 
@@ -266,17 +269,22 @@
             this.plotControl1.Size = new System.Drawing.Size(768, 460);
             this.plotControl1.TabIndex = 0;
             // 
-            // btnHaltMCU
+            // tabPage2
             // 
-            this.btnHaltMCU.BackColor = System.Drawing.Color.Yellow;
-            this.btnHaltMCU.Location = new System.Drawing.Point(10, 426);
-            this.btnHaltMCU.Margin = new System.Windows.Forms.Padding(2);
-            this.btnHaltMCU.Name = "btnHaltMCU";
-            this.btnHaltMCU.Size = new System.Drawing.Size(87, 28);
-            this.btnHaltMCU.TabIndex = 11;
-            this.btnHaltMCU.Text = "Halt MCU";
-            this.btnHaltMCU.UseVisualStyleBackColor = false;
-            this.btnHaltMCU.Click += new System.EventHandler(this.btnHaltMCU_Click);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(772, 464);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Testing";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // lblSelectedELFItem
+            // 
+            this.lblSelectedELFItem.Name = "lblSelectedELFItem";
+            this.lblSelectedELFItem.Size = new System.Drawing.Size(127, 17);
+            this.lblSelectedELFItem.Text = "Selected ELF Item: N/A";
             // 
             // Form1
             // 
@@ -323,6 +331,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lblLinesReceived;
         private System.Windows.Forms.Button btnTakeDataFromELF;
         private System.Windows.Forms.Button btnHaltMCU;
+        private System.Windows.Forms.ToolStripStatusLabel lblSelectedELFItem;
     }
 }
 
