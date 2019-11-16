@@ -12,8 +12,8 @@ namespace MCUCapture
 {
     public partial class Form1 : Form
     {
-        //OpenOCDClientClass OpenOCDClientObj;
         OpenOCDClientClassB OpenOCDClientObj;
+        ELF_Form ELF_FormObj;
 
         int DataReceivedCnt = 0;
 
@@ -53,7 +53,7 @@ namespace MCUCapture
             {
                 UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
                 UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
-                OpenOCDClientObj.CommandReadMemory(dataAddress, dataSize);
+                OpenOCDClientObj.CommandReadMemory(dataAddress, dataSize, true);
             }
             catch (Exception)
             {
@@ -100,14 +100,15 @@ namespace MCUCapture
            OpenOCDClientObj.CommandResumeMCU();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-           // OpenOCDClientObj.CommandReadWatchpoints();
-        }
 
         private void btnCleanWatchpoints_Click(object sender, EventArgs e)
         {
             OpenOCDClientObj.CommandCleanWatchpoint(OpenOCDClientObj.LastWPAddress);
+        }
+
+        private void btnHaltMCU_Click(object sender, EventArgs e)
+        {
+            OpenOCDClientObj.CommandHaltMCU();
         }
 
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
@@ -115,5 +116,23 @@ namespace MCUCapture
             plotControl1.SaveSettings();
             System.Threading.Thread.Sleep(200);
         }
+
+        void OpenELFForm()
+        {
+            if (ELF_FormObj == null)
+                ELF_FormObj = new ELF_Form();
+
+            if (ELF_FormObj.IsDisposed)
+                ELF_FormObj = new ELF_Form();
+
+            ELF_FormObj.Show();
+        }
+
+        private void btnTakeDataFromELF_Click(object sender, EventArgs e)
+        {
+            OpenELFForm();
+        }
+
+
     }
 }

@@ -34,6 +34,9 @@
     <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ELFSharp, Version=2.0.0.0, Culture=neutral, PublicKeyToken=f2d0c9031b10d3c0, processorArchitecture=MSIL">
+      <HintPath>packages\ELFSharp.2.2.0\lib\net45\ELFSharp.dll</HintPath>
+    </Reference>
     <Reference Include="LiteGuard, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\LiteGuard.1.1.0\lib\net35\LiteGuard.dll</HintPath>
     </Reference>
@@ -61,6 +64,13 @@
   <ItemGroup>
     <Compile Include="CmdReadMemoryClass.cs" />
     <Compile Include="DataConversionClass.cs" />
+    <Compile Include="ELFParserClass.cs" />
+    <Compile Include="ELF_Form.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ELF_Form.Designer.cs">
+      <DependentUpon>ELF_Form.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -76,6 +86,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ELF_Form.resx">
+      <DependentUpon>ELF_Form.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
