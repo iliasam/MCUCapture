@@ -13,7 +13,7 @@ namespace MCUCapture
         public struct MemoryTableItem
         {
             public string Name;
-            public UInt64 Address;//start addess
+            public UInt32 Address;//start addess
             public UInt32 Size;//bytes
         }
 
@@ -59,7 +59,7 @@ namespace MCUCapture
             int adrBegin = str.IndexOf("0x");
             int adrEnd = str.IndexOf(',', adrBegin);
             string addr = str.Substring(adrBegin, adrEnd - adrBegin);
-            newItem.Address = Convert.ToUInt64(addr, 16);
+            newItem.Address = Convert.ToUInt32(addr, 16);
 
             int sizeBegin = str.IndexOf("size:") + 6;
             int sizeEnd = str.IndexOf(',', sizeBegin);

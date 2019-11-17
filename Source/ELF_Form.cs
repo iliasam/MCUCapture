@@ -102,7 +102,7 @@ namespace MCUCapture
             dataGridView1.Refresh();
         }
 
-        bool AddressInFlash(UInt64 address)
+        bool AddressInFlash(UInt32 address)
         {
             if ((address >= 0x08000000) && (address <= 0x09000000))
                 return true;
