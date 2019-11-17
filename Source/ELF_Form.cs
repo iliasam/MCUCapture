@@ -50,7 +50,6 @@ namespace MCUCapture
             {
                 path = openFileDialog1.FileName;
                 ProcessFile(path);
-
             }
             else
             {

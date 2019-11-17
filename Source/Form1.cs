@@ -92,7 +92,7 @@ namespace MCUCapture
             UInt32 dataSize = Convert.ToUInt32(txtBoxDataSize.Text);
             UInt32 dataAddress = Convert.ToUInt32(txtBoxDataStartAddr.Text, 16);
             //OpenOCDClientObj.StartSetWatchpoint(dataSize + dataAddress - 4);
-            OpenOCDClientObj.StartWaitForData(dataAddress, dataSize, dataSize + dataAddress - 4);
+            OpenOCDClientObj.StartWaitForData(dataAddress, dataSize, dataSize + dataAddress - 1);
         }
 
         private void btnResumeMCU_Click(object sender, EventArgs e)

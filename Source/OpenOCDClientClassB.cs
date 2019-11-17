@@ -246,7 +246,7 @@ namespace MCUCapture
         //************************************************************************************
         public void CommandReadMemory(UInt32 startAddrBytes, UInt32 sizeBytes, bool ManualCall = false)
         {
-            if (ManualCall == false)
+            if (ManualCall == true)
                 AutoCleanWatchPoint = false;
 
             CmdReadMemorySize = sizeBytes;
