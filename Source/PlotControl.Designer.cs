@@ -90,9 +90,9 @@
             this.lblItemSize.AutoSize = true;
             this.lblItemSize.Location = new System.Drawing.Point(5, 248);
             this.lblItemSize.Name = "lblItemSize";
-            this.lblItemSize.Size = new System.Drawing.Size(81, 13);
+            this.lblItemSize.Size = new System.Drawing.Size(76, 13);
             this.lblItemSize.TabIndex = 3;
-            this.lblItemSize.Text = "Items Size: N/A";
+            this.lblItemSize.Text = "Item Size: N/A";
             // 
             // nudValuesCount
             // 

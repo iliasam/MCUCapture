@@ -37,6 +37,9 @@
             this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnHaltMCU = new System.Windows.Forms.Button();
             this.btnTakeDataFromELF = new System.Windows.Forms.Button();
             this.btnCleanWatchpoints = new System.Windows.Forms.Button();
@@ -52,6 +55,15 @@
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.txtBoxTriggerAddr = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.txtBoxTriggerValue = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.btnWaitForTrigger = new System.Windows.Forms.Button();
+            this.comboBoxTrigSize = new System.Windows.Forms.ComboBox();
+            this.lblHaltState = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblWatchpointActive = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -60,13 +72,16 @@
             // 
             // statusStrip1
             // 
+            this.statusStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Visible;
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.lblConnectionSate,
+            this.lblHaltState,
             this.lblDataReceivedCnt,
             this.lblLinesReceived,
-            this.lblSelectedELFItem});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 504);
+            this.lblSelectedELFItem,
+            this.lblWatchpointActive});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 549);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.statusStrip1.Size = new System.Drawing.Size(897, 22);
@@ -105,6 +120,16 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.comboBoxTrigSize);
+            this.groupBox1.Controls.Add(this.btnWaitForTrigger);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.txtBoxTriggerValue);
+            this.groupBox1.Controls.Add(this.txtBoxTriggerAddr);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.button1);
             this.groupBox1.Controls.Add(this.btnHaltMCU);
             this.groupBox1.Controls.Add(this.btnTakeDataFromELF);
             this.groupBox1.Controls.Add(this.btnCleanWatchpoints);
@@ -120,15 +145,47 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(104, 492);
+            this.groupBox1.Size = new System.Drawing.Size(104, 537);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label3.Location = new System.Drawing.Point(2, 212);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(98, 13);
+            this.label3.TabIndex = 14;
+            this.label3.Text = "   Capture Trigger   ";
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(4, 416);
+            this.button2.Margin = new System.Windows.Forms.Padding(2);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(51, 21);
+            this.button2.TabIndex = 13;
+            this.button2.Text = "wp info";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(58, 416);
+            this.button1.Margin = new System.Windows.Forms.Padding(2);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(34, 21);
+            this.button1.TabIndex = 12;
+            this.button1.Text = "test";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
             // btnHaltMCU
             // 
             this.btnHaltMCU.BackColor = System.Drawing.Color.Yellow;
-            this.btnHaltMCU.Location = new System.Drawing.Point(10, 426);
+            this.btnHaltMCU.Location = new System.Drawing.Point(7, 473);
             this.btnHaltMCU.Margin = new System.Windows.Forms.Padding(2);
             this.btnHaltMCU.Name = "btnHaltMCU";
             this.btnHaltMCU.Size = new System.Drawing.Size(87, 28);
@@ -139,7 +196,7 @@
             // 
             // btnTakeDataFromELF
             // 
-            this.btnTakeDataFromELF.Location = new System.Drawing.Point(4, 22);
+            this.btnTakeDataFromELF.Location = new System.Drawing.Point(4, 19);
             this.btnTakeDataFromELF.Margin = new System.Windows.Forms.Padding(2);
             this.btnTakeDataFromELF.Name = "btnTakeDataFromELF";
             this.btnTakeDataFromELF.Size = new System.Drawing.Size(96, 22);
@@ -150,7 +207,7 @@
             // 
             // btnCleanWatchpoints
             // 
-            this.btnCleanWatchpoints.Location = new System.Drawing.Point(10, 394);
+            this.btnCleanWatchpoints.Location = new System.Drawing.Point(7, 441);
             this.btnCleanWatchpoints.Margin = new System.Windows.Forms.Padding(2);
             this.btnCleanWatchpoints.Name = "btnCleanWatchpoints";
             this.btnCleanWatchpoints.Size = new System.Drawing.Size(87, 28);
@@ -161,7 +218,7 @@
             // 
             // btnResumeMCU
             // 
-            this.btnResumeMCU.Location = new System.Drawing.Point(10, 458);
+            this.btnResumeMCU.Location = new System.Drawing.Point(7, 505);
             this.btnResumeMCU.Margin = new System.Windows.Forms.Padding(2);
             this.btnResumeMCU.Name = "btnResumeMCU";
             this.btnResumeMCU.Size = new System.Drawing.Size(87, 28);
@@ -172,7 +229,7 @@
             // 
             // btnWaitEndWatchpoint
             // 
-            this.btnWaitEndWatchpoint.Location = new System.Drawing.Point(4, 210);
+            this.btnWaitEndWatchpoint.Location = new System.Drawing.Point(7, 178);
             this.btnWaitEndWatchpoint.Margin = new System.Windows.Forms.Padding(2);
             this.btnWaitEndWatchpoint.Name = "btnWaitEndWatchpoint";
             this.btnWaitEndWatchpoint.Size = new System.Drawing.Size(87, 28);
@@ -184,7 +241,7 @@
             // chkIsBigEndian
             // 
             this.chkIsBigEndian.AutoSize = true;
-            this.chkIsBigEndian.Location = new System.Drawing.Point(8, 144);
+            this.chkIsBigEndian.Location = new System.Drawing.Point(10, 125);
             this.chkIsBigEndian.Name = "chkIsBigEndian";
             this.chkIsBigEndian.Size = new System.Drawing.Size(77, 17);
             this.chkIsBigEndian.TabIndex = 5;
@@ -193,7 +250,7 @@
             // 
             // btnManualRead
             // 
-            this.btnManualRead.Location = new System.Drawing.Point(4, 171);
+            this.btnManualRead.Location = new System.Drawing.Point(7, 145);
             this.btnManualRead.Margin = new System.Windows.Forms.Padding(2);
             this.btnManualRead.Name = "btnManualRead";
             this.btnManualRead.Size = new System.Drawing.Size(87, 28);
@@ -204,7 +261,7 @@
             // 
             // txtBoxDataSize
             // 
-            this.txtBoxDataSize.Location = new System.Drawing.Point(4, 115);
+            this.txtBoxDataSize.Location = new System.Drawing.Point(9, 99);
             this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataSize.Name = "txtBoxDataSize";
             this.txtBoxDataSize.Size = new System.Drawing.Size(83, 20);
@@ -214,7 +271,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 96);
+            this.label2.Location = new System.Drawing.Point(7, 84);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
@@ -223,7 +280,7 @@
             // 
             // txtBoxDataStartAddr
             // 
-            this.txtBoxDataStartAddr.Location = new System.Drawing.Point(4, 70);
+            this.txtBoxDataStartAddr.Location = new System.Drawing.Point(9, 62);
             this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataStartAddr.Name = "txtBoxDataStartAddr";
             this.txtBoxDataStartAddr.Size = new System.Drawing.Size(83, 20);
@@ -233,7 +290,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(7, 50);
+            this.label1.Location = new System.Drawing.Point(12, 47);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
@@ -251,7 +308,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(780, 490);
+            this.tabControl1.Size = new System.Drawing.Size(780, 535);
             this.tabControl1.TabIndex = 3;
             // 
             // tabPagePlot
@@ -261,7 +318,7 @@
             this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2);
             this.tabPagePlot.Name = "tabPagePlot";
             this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPagePlot.Size = new System.Drawing.Size(772, 464);
+            this.tabPagePlot.Size = new System.Drawing.Size(772, 509);
             this.tabPagePlot.TabIndex = 0;
             this.tabPagePlot.Text = "Plot";
             this.tabPagePlot.UseVisualStyleBackColor = true;
@@ -272,7 +329,7 @@
             this.plotControl1.Location = new System.Drawing.Point(2, 2);
             this.plotControl1.Margin = new System.Windows.Forms.Padding(2);
             this.plotControl1.Name = "plotControl1";
-            this.plotControl1.Size = new System.Drawing.Size(768, 460);
+            this.plotControl1.Size = new System.Drawing.Size(768, 505);
             this.plotControl1.TabIndex = 0;
             // 
             // tabPage2
@@ -286,11 +343,96 @@
             this.tabPage2.Text = "Testing";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // txtBoxTriggerAddr
+            // 
+            this.txtBoxTriggerAddr.Location = new System.Drawing.Point(11, 245);
+            this.txtBoxTriggerAddr.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxTriggerAddr.Name = "txtBoxTriggerAddr";
+            this.txtBoxTriggerAddr.Size = new System.Drawing.Size(83, 20);
+            this.txtBoxTriggerAddr.TabIndex = 16;
+            this.txtBoxTriggerAddr.Text = "0x20001428";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 230);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Variable address:";
+            // 
+            // txtBoxTriggerValue
+            // 
+            this.txtBoxTriggerValue.Location = new System.Drawing.Point(11, 287);
+            this.txtBoxTriggerValue.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxTriggerValue.Name = "txtBoxTriggerValue";
+            this.txtBoxTriggerValue.Size = new System.Drawing.Size(83, 20);
+            this.txtBoxTriggerValue.TabIndex = 17;
+            this.txtBoxTriggerValue.Text = "1";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 270);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Variable value:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 315);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(30, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Size:";
+            // 
+            // btnWaitForTrigger
+            // 
+            this.btnWaitForTrigger.Location = new System.Drawing.Point(5, 338);
+            this.btnWaitForTrigger.Margin = new System.Windows.Forms.Padding(2);
+            this.btnWaitForTrigger.Name = "btnWaitForTrigger";
+            this.btnWaitForTrigger.Size = new System.Drawing.Size(87, 28);
+            this.btnWaitForTrigger.TabIndex = 23;
+            this.btnWaitForTrigger.Text = "Wait Trigger";
+            this.btnWaitForTrigger.UseVisualStyleBackColor = true;
+            this.btnWaitForTrigger.Click += new System.EventHandler(this.btnWaitForTrigger_Click);
+            // 
+            // comboBoxTrigSize
+            // 
+            this.comboBoxTrigSize.FormattingEnabled = true;
+            this.comboBoxTrigSize.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "4",
+            "8"});
+            this.comboBoxTrigSize.Location = new System.Drawing.Point(45, 312);
+            this.comboBoxTrigSize.Name = "comboBoxTrigSize";
+            this.comboBoxTrigSize.Size = new System.Drawing.Size(49, 21);
+            this.comboBoxTrigSize.TabIndex = 26;
+            this.comboBoxTrigSize.Text = "4";
+            // 
+            // lblHaltState
+            // 
+            this.lblHaltState.Name = "lblHaltState";
+            this.lblHaltState.Size = new System.Drawing.Size(62, 17);
+            this.lblHaltState.Text = "MCU: N/A";
+            // 
+            // lblWatchpointActive
+            // 
+            this.lblWatchpointActive.Name = "lblWatchpointActive";
+            this.lblWatchpointActive.Size = new System.Drawing.Size(97, 17);
+            this.lblWatchpointActive.Text = "Watchpoint: N/A";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(897, 526);
+            this.ClientSize = new System.Drawing.Size(897, 571);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
@@ -325,7 +467,6 @@
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.CheckBox chkIsBigEndian;
         private System.Windows.Forms.Button btnWaitEndWatchpoint;
-        private PlotControl plotControl1;
         private System.Windows.Forms.Button btnResumeMCU;
         private System.Windows.Forms.Button btnCleanWatchpoints;
         private System.Windows.Forms.ToolStripStatusLabel lblDataReceivedCnt;
@@ -333,6 +474,19 @@
         private System.Windows.Forms.Button btnTakeDataFromELF;
         private System.Windows.Forms.Button btnHaltMCU;
         private System.Windows.Forms.ToolStripStatusLabel lblSelectedELFItem;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private PlotControl plotControl1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtBoxTriggerAddr;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox txtBoxTriggerValue;
+        private System.Windows.Forms.Button btnWaitForTrigger;
+        private System.Windows.Forms.ComboBox comboBoxTrigSize;
+        private System.Windows.Forms.ToolStripStatusLabel lblHaltState;
+        private System.Windows.Forms.ToolStripStatusLabel lblWatchpointActive;
     }
 }
 

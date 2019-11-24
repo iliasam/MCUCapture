@@ -244,7 +244,7 @@ namespace MCUCapture
         void UpdateItemTotalSize()
         {
             DataItemTotalSize = GetSingleDataItemSize();
-            lblItemSize.Text = $"Items Size: {DataItemTotalSize} byte";
+            lblItemSize.Text = $"Item Size: {DataItemTotalSize} byte";
             lblItemsCnt.Text = $"Items Count: N/A";
         }
 

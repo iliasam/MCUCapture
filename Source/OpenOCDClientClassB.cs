@@ -37,18 +37,31 @@ namespace MCUCapture
 
         bool WatchpointEventDetected = false;
         bool AutoCleanWatchPoint = false;
+        public bool WatchpointIsSet = false;
 
         // Need to capture data when watchpoint event happens
         bool WPCaptureData = false;
 
-        //Address of last received Watchpoint
-        public UInt32 LastWPAddress = 0;
+        // We need to set Value watchpoint
+        bool AutoSetValueWatchpoint = false;
 
-        //Address of Watchpoint which we want to set
-        public UInt32 SetWPAddress = 0x20001424;
+        // Address of last received Watchpoint
+        //public UInt32 LastWPAddress = 0;
 
-        //Address data to be read when watchpoint will be detected
+        // Address of Watchpoint which we want to set
+        public UInt32 SetWPAddress = 0;
+
+        // Address of data to be read when watchpoint will be detected
         public UInt32 WPDataAddress = 0;
+
+        // Address of Value Watchpoint Variable
+        public UInt32 WPValueTriggerAddress = 0;
+
+        // Size of Value Watchpoint Variable
+        public byte WPValueTriggerSize = 0;
+
+        // Value of Value Watchpoint Variable
+        public UInt32 WPValueTrigger = 0;
 
         enum CommandType
         {
@@ -82,7 +95,7 @@ namespace MCUCapture
                 if (AutoCleanWatchPoint)
                 {
                     System.Diagnostics.Debug.WriteLine("#Auto remove watchpoint!");
-                    CommandCleanWatchpoint(LastWPAddress);
+                    CommandCleanWatchpoint(SetWPAddress);
                     return;
                 }
             }
@@ -138,7 +151,7 @@ namespace MCUCapture
             if (message.Length == 0)
                 return;
 
-            //System.Diagnostics.Debug.WriteLine("RX: " + message);
+            System.Diagnostics.Debug.WriteLine("RX: " + message);
 
             if (message.Contains(">") && (message.Length < 5))
             {
@@ -150,7 +163,7 @@ namespace MCUCapture
                 if (SetWatchpointsState == SetWatchpointsStateType.WaitForHalt)
                 {
                     SetWatchpointsState = SetWatchpointsStateType.WaitForWPSet;
-                    CommandSetWatchpoint(SetWPAddress);
+                    AutoSetWatchpoint();
                 }
             }
             else if (message.Contains("target halted due to breakpoint"))
@@ -181,6 +194,7 @@ namespace MCUCapture
                 if ((SetWatchpointsState == SetWatchpointsStateType.WaitForWPSet) &&
                     (AwaitingDataType == CommandType.SetWatchpoint))
                 {
+                    WatchpointIsSet = true;
                     System.Diagnostics.Debug.WriteLine("#Start wait for watchpoint event!");
                     SetWatchpointsState = SetWatchpointsStateType.WaitForEvent;
                     CommandResumeMCU();
@@ -190,6 +204,7 @@ namespace MCUCapture
                     System.Diagnostics.Debug.WriteLine("#Detected watchpoint event!");
                     MCUHalted = true;
                     WatchpointEventDetected = true;
+                    WatchpointIsSet = true;
 
                     if (SetWatchpointsState == SetWatchpointsStateType.WaitForEvent)
                     {
@@ -201,11 +216,21 @@ namespace MCUCapture
                         else if (AutoCleanWatchPoint)
                         {
                             System.Diagnostics.Debug.WriteLine("#Auto remove watchpoint!");
-                            CommandCleanWatchpoint(LastWPAddress);
+                            CommandCleanWatchpoint(SetWPAddress);
                             return;
                         }
                     }
                 }
+            }
+            else if (message.Contains("> resume"))
+            {
+                MCUHalted = false;
+            }
+            else if (message.Contains("Failure setting watchpoints"))
+            {
+                //ERROR!
+                CommandResumeMCU();
+                AwaitingDataType = CommandType.Unknown;
             }
             else
             {
@@ -254,21 +279,62 @@ namespace MCUCapture
             TxCommandsQueue.Enqueue(command);
         }
 
+        /// <summary>
+        /// Start process of setting and cleaning watchpoint
+        /// </summary>
+        /// <param name="startDataAddrBytes">Address of data source</param>
+        /// <param name="sizeBytes">Data size in bytes</param>
+        /// <param name="startTriggerAddrBytes">Write watchpoint address (1 byte size)</param>
+        /// <param name="AutoClean">Auto clean watchpoint</param>
         public void StartWaitForData(UInt32 startDataAddrBytes, UInt32 sizeBytes, UInt32 startTriggerAddrBytes, bool AutoClean = true)
         {
+            if (WatchpointIsSet)
+                return;
+
             WPDataAddress = startDataAddrBytes;
             CmdReadMemorySize = sizeBytes;
             WPCaptureData = true;
+            AutoSetValueWatchpoint = false;
             StartSetWatchpoint(startTriggerAddrBytes, AutoClean);
         }
 
+        /// <summary>
+        /// Start process of setting and cleaning value watchpoint
+        /// </summary>
+        /// <param name="startDataAddrBytes">Address of data source</param>
+        /// <param name="sizeBytes">Data size in bytes</param>
+        /// <param name="TriggerVarAddrBytes">Write watchpoint variable address</param>
+        /// <param name="TriggerVarSize">Trigger variable size, bytes</param>
+        /// <param name="TriggerVarValue">Trigger value</param>
+        /// <param name="AutoClean">Auto clean watchpoint</param>
+        public void StartWaitForTrigData(
+            UInt32 startDataAddrBytes, 
+            UInt32 sizeBytes, 
+            UInt32 TriggerVarAddrBytes, 
+            byte TriggerVarSize,
+            UInt32 TriggerVarValue,
+            bool AutoClean = true)
+        {
+            if (WatchpointIsSet)
+                return;
+
+            WPDataAddress = startDataAddrBytes;
+            CmdReadMemorySize = sizeBytes;
+            WPValueTrigger = TriggerVarValue;
+            WPValueTriggerAddress = TriggerVarAddrBytes;
+            WPValueTriggerSize = TriggerVarSize;
+
+            AutoSetValueWatchpoint = true;
+            WPCaptureData = true;
+            StartSetWatchpoint(WPValueTriggerAddress, AutoClean);
+        }
+
         //AutoClean - auto clean watchpoint after its event detected
-        public void StartSetWatchpoint(UInt32 startAddrBytes, bool AutoClean = true)
+        public void StartSetWatchpoint(UInt32 WatchpointAddrBytes, bool AutoClean = true)
         {
             WatchpointEventDetected = false;
-            LastWPAddress = startAddrBytes;
             AutoCleanWatchPoint = AutoClean;
-            SetWPAddress = startAddrBytes;
+            SetWPAddress = WatchpointAddrBytes;
             SetWatchpointsState = SetWatchpointsStateType.Idle;
 
             if (MCUHalted == false)
@@ -279,10 +345,20 @@ namespace MCUCapture
             else
             {
                 SetWatchpointsState = SetWatchpointsStateType.WaitForWPSet;
-                CommandSetWatchpoint(SetWPAddress);
+                AutoSetWatchpoint();
             }
-                
-            //CommandResumeMCU();//run programm - wait for interrupt
+        }
+
+        /// <summary>
+        /// Automaticly send command for setting watchpoint
+        /// Mode is defined by "AutoSetValueWatchpoint"
+        /// </summary>
+        void AutoSetWatchpoint()
+        {
+            if (AutoSetValueWatchpoint)
+                CommandSetValueWatchpoint(WPValueTriggerAddress, WPValueTriggerSize, WPValueTrigger);
+            else
+                CommandSetWatchpoint(SetWPAddress);
         }
 
         public void CommandHaltMCU()
@@ -296,6 +372,20 @@ namespace MCUCapture
         {
             AwaitingDataType = CommandType.SetWatchpoint;
             string command = $"wp 0x{startAddrBytes:X8}  1 w";//write access, 1 byte
+            TxCommandsQueue.Enqueue(command);
+        }
+
+        //AutoClean - auto clean watchpoint after its event detected
+        public void CommandSetValueWatchpoint(UInt32 startAddrBytes, byte dataSize, UInt32 value)
+        {
+            AwaitingDataType = CommandType.SetWatchpoint;
+            string command = $"wp 0x{startAddrBytes:X8}  {dataSize} w {value}";//write access
+            TxCommandsQueue.Enqueue(command);
+        }
+
+        public void CommandWPInfo()
+        {
+            string command = $"wp";
             TxCommandsQueue.Enqueue(command);
         }
 
@@ -320,6 +410,7 @@ namespace MCUCapture
 
             command = $"rwp 0x{startAddrBytes:X8}";//remove watchpoint
 
+            WatchpointIsSet = false;
             AwaitingDataType = CommandType.CleanWatchpoint;
             TxCommandsQueue.Enqueue(command);
         }
