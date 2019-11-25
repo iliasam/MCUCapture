@@ -32,11 +32,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblConnectionSate = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblHaltState = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDataReceivedCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLinesReceived = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblWatchpointActive = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.comboBoxTrigSize = new System.Windows.Forms.ComboBox();
+            this.btnWaitForTrigger = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtBoxTriggerValue = new System.Windows.Forms.TextBox();
+            this.txtBoxTriggerAddr = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -53,17 +62,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePlot = new System.Windows.Forms.TabPage();
-            this.plotControl1 = new MCUCapture.PlotControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtBoxTriggerAddr = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtBoxTriggerValue = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.btnWaitForTrigger = new System.Windows.Forms.Button();
-            this.comboBoxTrigSize = new System.Windows.Forms.ComboBox();
-            this.lblHaltState = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblWatchpointActive = new System.Windows.Forms.ToolStripStatusLabel();
+            this.btnTaketriggerAddressFromELF = new System.Windows.Forms.Button();
+            this.lblSelectedTriggerELFItem = new System.Windows.Forms.ToolStripStatusLabel();
+            this.plotControl1 = new MCUCapture.PlotControl();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -79,8 +81,9 @@
             this.lblHaltState,
             this.lblDataReceivedCnt,
             this.lblLinesReceived,
+            this.lblWatchpointActive,
             this.lblSelectedELFItem,
-            this.lblWatchpointActive});
+            this.lblSelectedTriggerELFItem});
             this.statusStrip1.Location = new System.Drawing.Point(0, 549);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
@@ -90,27 +93,41 @@
             // 
             // lblConnectionSate
             // 
+            this.lblConnectionSate.AutoSize = false;
             this.lblConnectionSate.Name = "lblConnectionSate";
-            this.lblConnectionSate.Size = new System.Drawing.Size(97, 17);
+            this.lblConnectionSate.Size = new System.Drawing.Size(100, 17);
             this.lblConnectionSate.Text = "Connection: N/A";
+            // 
+            // lblHaltState
+            // 
+            this.lblHaltState.AutoSize = false;
+            this.lblHaltState.Name = "lblHaltState";
+            this.lblHaltState.Size = new System.Drawing.Size(70, 17);
+            this.lblHaltState.Text = "MCU: N/A";
             // 
             // lblDataReceivedCnt
             // 
             this.lblDataReceivedCnt.Name = "lblDataReceivedCnt";
-            this.lblDataReceivedCnt.Size = new System.Drawing.Size(115, 17);
-            this.lblDataReceivedCnt.Text = "Data Received Cnt: 0";
+            this.lblDataReceivedCnt.Size = new System.Drawing.Size(82, 17);
+            this.lblDataReceivedCnt.Text = "Data RX Cnt: 0";
             // 
             // lblLinesReceived
             // 
             this.lblLinesReceived.Name = "lblLinesReceived";
-            this.lblLinesReceived.Size = new System.Drawing.Size(96, 17);
-            this.lblLinesReceived.Text = "Lines Received: 0";
+            this.lblLinesReceived.Size = new System.Drawing.Size(63, 17);
+            this.lblLinesReceived.Text = "Lines RX: 0";
             // 
             // lblSelectedELFItem
             // 
             this.lblSelectedELFItem.Name = "lblSelectedELFItem";
-            this.lblSelectedELFItem.Size = new System.Drawing.Size(127, 17);
-            this.lblSelectedELFItem.Text = "Selected ELF Item: N/A";
+            this.lblSelectedELFItem.Size = new System.Drawing.Size(109, 17);
+            this.lblSelectedELFItem.Text = "Curr. ELF Item: N/A";
+            // 
+            // lblWatchpointActive
+            // 
+            this.lblWatchpointActive.Name = "lblWatchpointActive";
+            this.lblWatchpointActive.Size = new System.Drawing.Size(97, 17);
+            this.lblWatchpointActive.Text = "Watchpoint: N/A";
             // 
             // timerUpdateGUI
             // 
@@ -120,6 +137,7 @@
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
+            this.groupBox1.Controls.Add(this.btnTaketriggerAddressFromELF);
             this.groupBox1.Controls.Add(this.comboBoxTrigSize);
             this.groupBox1.Controls.Add(this.btnWaitForTrigger);
             this.groupBox1.Controls.Add(this.label6);
@@ -149,6 +167,79 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
+            // 
+            // comboBoxTrigSize
+            // 
+            this.comboBoxTrigSize.FormattingEnabled = true;
+            this.comboBoxTrigSize.Items.AddRange(new object[] {
+            "1",
+            "2",
+            "4",
+            "8"});
+            this.comboBoxTrigSize.Location = new System.Drawing.Point(45, 339);
+            this.comboBoxTrigSize.Name = "comboBoxTrigSize";
+            this.comboBoxTrigSize.Size = new System.Drawing.Size(49, 21);
+            this.comboBoxTrigSize.TabIndex = 26;
+            this.comboBoxTrigSize.Text = "4";
+            // 
+            // btnWaitForTrigger
+            // 
+            this.btnWaitForTrigger.Location = new System.Drawing.Point(7, 365);
+            this.btnWaitForTrigger.Margin = new System.Windows.Forms.Padding(2);
+            this.btnWaitForTrigger.Name = "btnWaitForTrigger";
+            this.btnWaitForTrigger.Size = new System.Drawing.Size(87, 28);
+            this.btnWaitForTrigger.TabIndex = 23;
+            this.btnWaitForTrigger.Text = "Wait Trigger";
+            this.btnWaitForTrigger.UseVisualStyleBackColor = true;
+            this.btnWaitForTrigger.Click += new System.EventHandler(this.btnWaitForTrigger_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(10, 342);
+            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(30, 13);
+            this.label6.TabIndex = 20;
+            this.label6.Text = "Size:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 297);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(77, 13);
+            this.label5.TabIndex = 18;
+            this.label5.Text = "Variable value:";
+            // 
+            // txtBoxTriggerValue
+            // 
+            this.txtBoxTriggerValue.Location = new System.Drawing.Point(11, 314);
+            this.txtBoxTriggerValue.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxTriggerValue.Name = "txtBoxTriggerValue";
+            this.txtBoxTriggerValue.Size = new System.Drawing.Size(83, 20);
+            this.txtBoxTriggerValue.TabIndex = 17;
+            this.txtBoxTriggerValue.Text = "1";
+            // 
+            // txtBoxTriggerAddr
+            // 
+            this.txtBoxTriggerAddr.Location = new System.Drawing.Point(11, 244);
+            this.txtBoxTriggerAddr.Margin = new System.Windows.Forms.Padding(2);
+            this.txtBoxTriggerAddr.Name = "txtBoxTriggerAddr";
+            this.txtBoxTriggerAddr.Size = new System.Drawing.Size(83, 20);
+            this.txtBoxTriggerAddr.TabIndex = 16;
+            this.txtBoxTriggerAddr.Text = "0x20001428";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 229);
+            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(88, 13);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "Variable address:";
             // 
             // label3
             // 
@@ -201,7 +292,7 @@
             this.btnTakeDataFromELF.Name = "btnTakeDataFromELF";
             this.btnTakeDataFromELF.Size = new System.Drawing.Size(96, 22);
             this.btnTakeDataFromELF.TabIndex = 10;
-            this.btnTakeDataFromELF.Text = "Take From ELF";
+            this.btnTakeDataFromELF.Text = "Addr. from ELF";
             this.btnTakeDataFromELF.UseVisualStyleBackColor = true;
             this.btnTakeDataFromELF.Click += new System.EventHandler(this.btnTakeDataFromELF_Click);
             // 
@@ -241,7 +332,7 @@
             // chkIsBigEndian
             // 
             this.chkIsBigEndian.AutoSize = true;
-            this.chkIsBigEndian.Location = new System.Drawing.Point(10, 125);
+            this.chkIsBigEndian.Location = new System.Drawing.Point(10, 124);
             this.chkIsBigEndian.Name = "chkIsBigEndian";
             this.chkIsBigEndian.Size = new System.Drawing.Size(77, 17);
             this.chkIsBigEndian.TabIndex = 5;
@@ -261,7 +352,7 @@
             // 
             // txtBoxDataSize
             // 
-            this.txtBoxDataSize.Location = new System.Drawing.Point(9, 99);
+            this.txtBoxDataSize.Location = new System.Drawing.Point(9, 96);
             this.txtBoxDataSize.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataSize.Name = "txtBoxDataSize";
             this.txtBoxDataSize.Size = new System.Drawing.Size(83, 20);
@@ -271,7 +362,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(7, 84);
+            this.label2.Location = new System.Drawing.Point(7, 81);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(86, 13);
@@ -280,7 +371,7 @@
             // 
             // txtBoxDataStartAddr
             // 
-            this.txtBoxDataStartAddr.Location = new System.Drawing.Point(9, 62);
+            this.txtBoxDataStartAddr.Location = new System.Drawing.Point(9, 59);
             this.txtBoxDataStartAddr.Margin = new System.Windows.Forms.Padding(2);
             this.txtBoxDataStartAddr.Name = "txtBoxDataStartAddr";
             this.txtBoxDataStartAddr.Size = new System.Drawing.Size(83, 20);
@@ -290,7 +381,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 47);
+            this.label1.Location = new System.Drawing.Point(12, 44);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
@@ -323,6 +414,34 @@
             this.tabPagePlot.Text = "Plot";
             this.tabPagePlot.UseVisualStyleBackColor = true;
             // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPage2.Size = new System.Drawing.Size(772, 509);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Testing";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // btnTaketriggerAddressFromELF
+            // 
+            this.btnTaketriggerAddressFromELF.Location = new System.Drawing.Point(4, 271);
+            this.btnTaketriggerAddressFromELF.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTaketriggerAddressFromELF.Name = "btnTaketriggerAddressFromELF";
+            this.btnTaketriggerAddressFromELF.Size = new System.Drawing.Size(96, 22);
+            this.btnTaketriggerAddressFromELF.TabIndex = 27;
+            this.btnTaketriggerAddressFromELF.Text = "Addr. From ELF";
+            this.btnTaketriggerAddressFromELF.UseVisualStyleBackColor = true;
+            this.btnTaketriggerAddressFromELF.Click += new System.EventHandler(this.btnTaketriggerAddressFromELF_Click);
+            // 
+            // lblSelectedTriggerELFItem
+            // 
+            this.lblSelectedTriggerELFItem.Name = "lblSelectedTriggerELFItem";
+            this.lblSelectedTriggerELFItem.Size = new System.Drawing.Size(149, 17);
+            this.lblSelectedTriggerELFItem.Text = "Curr. Trigger ELF Item: N/A";
+            // 
             // plotControl1
             // 
             this.plotControl1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -331,102 +450,6 @@
             this.plotControl1.Name = "plotControl1";
             this.plotControl1.Size = new System.Drawing.Size(768, 505);
             this.plotControl1.TabIndex = 0;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(772, 464);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Testing";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // txtBoxTriggerAddr
-            // 
-            this.txtBoxTriggerAddr.Location = new System.Drawing.Point(11, 245);
-            this.txtBoxTriggerAddr.Margin = new System.Windows.Forms.Padding(2);
-            this.txtBoxTriggerAddr.Name = "txtBoxTriggerAddr";
-            this.txtBoxTriggerAddr.Size = new System.Drawing.Size(83, 20);
-            this.txtBoxTriggerAddr.TabIndex = 16;
-            this.txtBoxTriggerAddr.Text = "0x20001428";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(6, 230);
-            this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(88, 13);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "Variable address:";
-            // 
-            // txtBoxTriggerValue
-            // 
-            this.txtBoxTriggerValue.Location = new System.Drawing.Point(11, 287);
-            this.txtBoxTriggerValue.Margin = new System.Windows.Forms.Padding(2);
-            this.txtBoxTriggerValue.Name = "txtBoxTriggerValue";
-            this.txtBoxTriggerValue.Size = new System.Drawing.Size(83, 20);
-            this.txtBoxTriggerValue.TabIndex = 17;
-            this.txtBoxTriggerValue.Text = "1";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(8, 270);
-            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(77, 13);
-            this.label5.TabIndex = 18;
-            this.label5.Text = "Variable value:";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(10, 315);
-            this.label6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(30, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Size:";
-            // 
-            // btnWaitForTrigger
-            // 
-            this.btnWaitForTrigger.Location = new System.Drawing.Point(5, 338);
-            this.btnWaitForTrigger.Margin = new System.Windows.Forms.Padding(2);
-            this.btnWaitForTrigger.Name = "btnWaitForTrigger";
-            this.btnWaitForTrigger.Size = new System.Drawing.Size(87, 28);
-            this.btnWaitForTrigger.TabIndex = 23;
-            this.btnWaitForTrigger.Text = "Wait Trigger";
-            this.btnWaitForTrigger.UseVisualStyleBackColor = true;
-            this.btnWaitForTrigger.Click += new System.EventHandler(this.btnWaitForTrigger_Click);
-            // 
-            // comboBoxTrigSize
-            // 
-            this.comboBoxTrigSize.FormattingEnabled = true;
-            this.comboBoxTrigSize.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "4",
-            "8"});
-            this.comboBoxTrigSize.Location = new System.Drawing.Point(45, 312);
-            this.comboBoxTrigSize.Name = "comboBoxTrigSize";
-            this.comboBoxTrigSize.Size = new System.Drawing.Size(49, 21);
-            this.comboBoxTrigSize.TabIndex = 26;
-            this.comboBoxTrigSize.Text = "4";
-            // 
-            // lblHaltState
-            // 
-            this.lblHaltState.Name = "lblHaltState";
-            this.lblHaltState.Size = new System.Drawing.Size(62, 17);
-            this.lblHaltState.Text = "MCU: N/A";
-            // 
-            // lblWatchpointActive
-            // 
-            this.lblWatchpointActive.Name = "lblWatchpointActive";
-            this.lblWatchpointActive.Size = new System.Drawing.Size(97, 17);
-            this.lblWatchpointActive.Text = "Watchpoint: N/A";
             // 
             // Form1
             // 
@@ -487,6 +510,8 @@
         private System.Windows.Forms.ComboBox comboBoxTrigSize;
         private System.Windows.Forms.ToolStripStatusLabel lblHaltState;
         private System.Windows.Forms.ToolStripStatusLabel lblWatchpointActive;
+        private System.Windows.Forms.Button btnTaketriggerAddressFromELF;
+        private System.Windows.Forms.ToolStripStatusLabel lblSelectedTriggerELFItem;
     }
 }
 

@@ -23,8 +23,9 @@ namespace MCUCapture
             InitializeComponent();
             OpenOCDClientObj = new OpenOCDClientClassB();
             OpenOCDClientObj.MemoryReadDataCallback += MemoryReadDataForm;
-            lblDataReceivedCnt.Text = $"| Data Received Cnt: {0}";
+            lblDataReceivedCnt.Text = $"| Data RX Cnt: {0}";
             lblSelectedELFItem.Text = $"| Selected ELF Item: N/A";
+            lblSelectedTriggerELFItem.Text = $"| Curr. Trigger ELF Item: N/A";
         }
 
         //callback from openocd client
@@ -35,7 +36,7 @@ namespace MCUCapture
             DataReceivedCnt++;
             Invoke((MethodInvoker)(() =>
             {
-                lblDataReceivedCnt.Text = $"| Data Received Cnt: {DataReceivedCnt}";
+                lblDataReceivedCnt.Text = $"| Data RX Cnt: {DataReceivedCnt}";
             }));
         }
 
@@ -46,7 +47,7 @@ namespace MCUCapture
                 lblConnectionSate.Text = "Connection: OK";
             else
                 lblConnectionSate.Text = "Connection: Fail";
-            lblLinesReceived.Text = $"| Lines Received: {OpenOCDClientObj.LinesReceived}";
+            lblLinesReceived.Text = $"| Lines RX: {OpenOCDClientObj.LinesReceived}";
 
             if (OpenOCDClientObj.MCUHalted)
                 lblHaltState.Text = "| MCU: Halted";
@@ -132,6 +133,7 @@ namespace MCUCapture
                 ELF_FormObj = new ELF_Form();
 
             ELF_FormObj.DataSelectedAction += DataSelectedActionForm;
+            ELF_FormObj.TriggerSelectedAction += TriggerSelectedActionForm;
             ELF_FormObj.Show();
         }
 
@@ -140,12 +142,21 @@ namespace MCUCapture
         {
             txtBoxDataStartAddr.Text = "0x" + selectedItem.Address.ToString("X");
             txtBoxDataSize.Text = selectedItem.Size.ToString();
-            lblSelectedELFItem.Text = $"| Selected ELF Item: \"{selectedItem.Name}\"";
+            lblSelectedELFItem.Text = $"| Curr. ELF Item: \"{selectedItem.Name}\"";
+        }
+
+        //calback from elf selecting window. Called when data selection is complete
+        void TriggerSelectedActionForm(ELFParserClass.MemoryTableItem selectedItem)
+        {
+            txtBoxTriggerAddr.Text = "0x" + selectedItem.Address.ToString("X");
+            comboBoxTrigSize.Text = selectedItem.Size.ToString();
+            lblSelectedTriggerELFItem.Text = $"| Curr. Trigger ELF Item: \"{selectedItem.Name}\"";
         }
 
         private void btnTakeDataFromELF_Click(object sender, EventArgs e)
         {
             OpenELFForm();
+            ELF_FormObj.PrepareForDataSelection();
         }
 
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
@@ -174,6 +185,12 @@ namespace MCUCapture
             UInt32 varValue = Convert.ToUInt32(txtBoxTriggerValue.Text);
 
             OpenOCDClientObj.StartWaitForTrigData(dataAddress, dataSize, varAddress, varSize, varValue);
+        }
+
+        private void btnTaketriggerAddressFromELF_Click(object sender, EventArgs e)
+        {
+            OpenELFForm();
+            ELF_FormObj.PrepareForTriggerSelection();
         }
     }
 }
