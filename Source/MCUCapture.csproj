@@ -64,6 +64,12 @@
   <ItemGroup>
     <Compile Include="CmdReadMemoryClass.cs" />
     <Compile Include="DataConversionClass.cs" />
+    <Compile Include="DataSavingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DataSavingControl.Designer.cs">
+      <DependentUpon>DataSavingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="ELFParserClass.cs" />
     <Compile Include="ELF_Form.cs">
       <SubType>Form</SubType>
@@ -86,6 +92,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DataSavingControl.resx">
+      <DependentUpon>DataSavingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ELF_Form.resx">
       <DependentUpon>ELF_Form.cs</DependentUpon>
     </EmbeddedResource>

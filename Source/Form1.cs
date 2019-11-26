@@ -17,6 +17,8 @@ namespace MCUCapture
 
         int DataReceivedCnt = 0;
 
+        int SelectedTabPage = 0;
+
         //openocd -d2 -f interface/stlink.cfg -f target/stm32f4x.cfg
         public Form1()
         {
@@ -31,7 +33,14 @@ namespace MCUCapture
         //callback from openocd client
         void MemoryReadDataForm(byte[] rxData)
         {
-            plotControl1.ProcessData(rxData, chkIsBigEndian.Checked);
+            if (SelectedTabPage == 0)
+            {
+                plotControl1.ProcessData(rxData, chkIsBigEndian.Checked);
+            }
+            else if (SelectedTabPage == 1)
+            {
+                dataSavingControl1.SaveData(rxData);
+            }
 
             DataReceivedCnt++;
             Invoke((MethodInvoker)(() =>
@@ -93,6 +102,7 @@ namespace MCUCapture
         private void timerUpdateGUI_Tick(object sender, EventArgs e)
         {
             UpdateGUI();
+            SelectedTabPage = tabControl1.SelectedIndex;
         }
 
         private void btnManualRead_Click(object sender, EventArgs e)

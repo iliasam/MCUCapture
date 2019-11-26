@@ -35,10 +35,12 @@
             this.lblHaltState = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblDataReceivedCnt = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblLinesReceived = new System.Windows.Forms.ToolStripStatusLabel();
-            this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblWatchpointActive = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSelectedELFItem = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSelectedTriggerELFItem = new System.Windows.Forms.ToolStripStatusLabel();
             this.timerUpdateGUI = new System.Windows.Forms.Timer(this.components);
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.btnTaketriggerAddressFromELF = new System.Windows.Forms.Button();
             this.comboBoxTrigSize = new System.Windows.Forms.ComboBox();
             this.btnWaitForTrigger = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -63,13 +65,14 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePlot = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.btnTaketriggerAddressFromELF = new System.Windows.Forms.Button();
-            this.lblSelectedTriggerELFItem = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tabPageDataSaving = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
+            this.dataSavingControl1 = new MCUCapture.DataSavingControl();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPagePlot.SuspendLayout();
+            this.tabPageDataSaving.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -117,17 +120,23 @@
             this.lblLinesReceived.Size = new System.Drawing.Size(63, 17);
             this.lblLinesReceived.Text = "Lines RX: 0";
             // 
+            // lblWatchpointActive
+            // 
+            this.lblWatchpointActive.Name = "lblWatchpointActive";
+            this.lblWatchpointActive.Size = new System.Drawing.Size(97, 17);
+            this.lblWatchpointActive.Text = "Watchpoint: N/A";
+            // 
             // lblSelectedELFItem
             // 
             this.lblSelectedELFItem.Name = "lblSelectedELFItem";
             this.lblSelectedELFItem.Size = new System.Drawing.Size(109, 17);
             this.lblSelectedELFItem.Text = "Curr. ELF Item: N/A";
             // 
-            // lblWatchpointActive
+            // lblSelectedTriggerELFItem
             // 
-            this.lblWatchpointActive.Name = "lblWatchpointActive";
-            this.lblWatchpointActive.Size = new System.Drawing.Size(97, 17);
-            this.lblWatchpointActive.Text = "Watchpoint: N/A";
+            this.lblSelectedTriggerELFItem.Name = "lblSelectedTriggerELFItem";
+            this.lblSelectedTriggerELFItem.Size = new System.Drawing.Size(149, 17);
+            this.lblSelectedTriggerELFItem.Text = "Curr. Trigger ELF Item: N/A";
             // 
             // timerUpdateGUI
             // 
@@ -167,6 +176,17 @@
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
+            // 
+            // btnTaketriggerAddressFromELF
+            // 
+            this.btnTaketriggerAddressFromELF.Location = new System.Drawing.Point(4, 271);
+            this.btnTaketriggerAddressFromELF.Margin = new System.Windows.Forms.Padding(2);
+            this.btnTaketriggerAddressFromELF.Name = "btnTaketriggerAddressFromELF";
+            this.btnTaketriggerAddressFromELF.Size = new System.Drawing.Size(96, 22);
+            this.btnTaketriggerAddressFromELF.TabIndex = 27;
+            this.btnTaketriggerAddressFromELF.Text = "Addr. From ELF";
+            this.btnTaketriggerAddressFromELF.UseVisualStyleBackColor = true;
+            this.btnTaketriggerAddressFromELF.Click += new System.EventHandler(this.btnTaketriggerAddressFromELF_Click);
             // 
             // comboBoxTrigSize
             // 
@@ -394,13 +414,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPagePlot);
+            this.tabControl1.Controls.Add(this.tabPageDataSaving);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Location = new System.Drawing.Point(117, 12);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(780, 535);
-            this.tabControl1.TabIndex = 3;
+            this.tabControl1.TabIndex = 2;
             // 
             // tabPagePlot
             // 
@@ -425,22 +446,16 @@
             this.tabPage2.Text = "Testing";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // btnTaketriggerAddressFromELF
+            // tabPageDataSaving
             // 
-            this.btnTaketriggerAddressFromELF.Location = new System.Drawing.Point(4, 271);
-            this.btnTaketriggerAddressFromELF.Margin = new System.Windows.Forms.Padding(2);
-            this.btnTaketriggerAddressFromELF.Name = "btnTaketriggerAddressFromELF";
-            this.btnTaketriggerAddressFromELF.Size = new System.Drawing.Size(96, 22);
-            this.btnTaketriggerAddressFromELF.TabIndex = 27;
-            this.btnTaketriggerAddressFromELF.Text = "Addr. From ELF";
-            this.btnTaketriggerAddressFromELF.UseVisualStyleBackColor = true;
-            this.btnTaketriggerAddressFromELF.Click += new System.EventHandler(this.btnTaketriggerAddressFromELF_Click);
-            // 
-            // lblSelectedTriggerELFItem
-            // 
-            this.lblSelectedTriggerELFItem.Name = "lblSelectedTriggerELFItem";
-            this.lblSelectedTriggerELFItem.Size = new System.Drawing.Size(149, 17);
-            this.lblSelectedTriggerELFItem.Text = "Curr. Trigger ELF Item: N/A";
+            this.tabPageDataSaving.Controls.Add(this.dataSavingControl1);
+            this.tabPageDataSaving.Location = new System.Drawing.Point(4, 22);
+            this.tabPageDataSaving.Name = "tabPageDataSaving";
+            this.tabPageDataSaving.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageDataSaving.Size = new System.Drawing.Size(772, 509);
+            this.tabPageDataSaving.TabIndex = 2;
+            this.tabPageDataSaving.Text = "Data Saving";
+            this.tabPageDataSaving.UseVisualStyleBackColor = true;
             // 
             // plotControl1
             // 
@@ -450,6 +465,13 @@
             this.plotControl1.Name = "plotControl1";
             this.plotControl1.Size = new System.Drawing.Size(768, 505);
             this.plotControl1.TabIndex = 0;
+            // 
+            // dataSavingControl1
+            // 
+            this.dataSavingControl1.Location = new System.Drawing.Point(6, 6);
+            this.dataSavingControl1.Name = "dataSavingControl1";
+            this.dataSavingControl1.Size = new System.Drawing.Size(503, 200);
+            this.dataSavingControl1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -470,6 +492,7 @@
             this.groupBox1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
             this.tabPagePlot.ResumeLayout(false);
+            this.tabPageDataSaving.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -512,6 +535,8 @@
         private System.Windows.Forms.ToolStripStatusLabel lblWatchpointActive;
         private System.Windows.Forms.Button btnTaketriggerAddressFromELF;
         private System.Windows.Forms.ToolStripStatusLabel lblSelectedTriggerELFItem;
+        private System.Windows.Forms.TabPage tabPageDataSaving;
+        private DataSavingControl dataSavingControl1;
     }
 }
 
