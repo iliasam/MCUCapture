@@ -6,10 +6,17 @@ using System.Threading.Tasks;
 
 namespace MCUCapture
 {
+    /// <summary>
+    /// Pasring received data
+    /// </summary>
     class CmdReadMemoryClass
     {
         List<byte> bytesList = new List<byte>();
         UInt32 EstimatedSize = 0;
+
+        /// <summary>
+        /// Called whien all estimated data is prosessed
+        /// </summary>
         public Action<byte[]> DataParsingEndCallback;
 
         public void InitReadMemory(UInt32 sizeBytes)

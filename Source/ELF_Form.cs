@@ -45,7 +45,9 @@ namespace MCUCapture
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             string path = "";
-            openFileDialog1.Filter = "elf (*.elf)|*.elf|out (*.out)|*.out|All files (*.*)|*.*";
+            // openFileDialog1.Filter = "elf (*.elf)|*.elf|out (*.out)|*.out|All files (*.*)|*.*";
+            openFileDialog1.Filter = "elf, out, axf |*.elf;*.out;*.axf |All files (*.*)|*.*";
+
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 path = openFileDialog1.FileName;
@@ -113,6 +115,9 @@ namespace MCUCapture
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int row = e.RowIndex;
+            if (row < 0)
+                return;
+
             int listIndex = (int)dataGridView1.Rows[row].Cells[0].Value;//dirty
             SelectedItem = ELFParserObj.MemoryTable[listIndex];
 

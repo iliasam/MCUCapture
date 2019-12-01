@@ -92,6 +92,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsHandlingClass.cs" />
     <EmbeddedResource Include="DataSavingControl.resx">
       <DependentUpon>DataSavingControl.cs</DependentUpon>
     </EmbeddedResource>

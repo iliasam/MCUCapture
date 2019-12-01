@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace MCUCapture
 {
@@ -14,6 +15,7 @@ namespace MCUCapture
     {
         OpenOCDClientClassB OpenOCDClientObj;
         ELF_Form ELF_FormObj;
+        SettingsHandlingClass SettingsHandlingObj;
 
         int DataReceivedCnt = 0;
 
@@ -28,6 +30,17 @@ namespace MCUCapture
             lblDataReceivedCnt.Text = $"| Data RX Cnt: {0}";
             lblSelectedELFItem.Text = $"| Selected ELF Item: N/A";
             lblSelectedTriggerELFItem.Text = $"| Curr. Trigger ELF Item: N/A";
+
+            string settings_file_path = Application.StartupPath + @"\config.ini";
+            if (File.Exists(settings_file_path))
+            {
+                SettingsHandlingObj = new SettingsHandlingClass(settings_file_path);
+                ReadSavedSettings();
+            }
+            else
+            {
+                MessageBox.Show("ERROR: File config.ini not found!");
+            } 
         }
 
         //callback from openocd client
@@ -172,6 +185,7 @@ namespace MCUCapture
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             plotControl1.SaveSettings();
+            AppSaveSettings();
             System.Threading.Thread.Sleep(200);
         }
 
@@ -201,6 +215,38 @@ namespace MCUCapture
         {
             OpenELFForm();
             ELF_FormObj.PrepareForTriggerSelection();
+        }
+
+        void ReadSavedSettings()
+        {
+            string str_data_address = SettingsHandlingObj.GetSetting("DATA_SETTINGS", "data_address");
+            string str_data_size = SettingsHandlingObj.GetSetting("DATA_SETTINGS", "data_size");
+
+            string str_trig_var_addr = SettingsHandlingObj.GetSetting("TRIGGER_SETTINGS", "trigger_var_address");
+            string str_trig_var_size = SettingsHandlingObj.GetSetting("TRIGGER_SETTINGS", "trigger_var_size");
+            string str_trig_var_value = SettingsHandlingObj.GetSetting("TRIGGER_SETTINGS", "trigger_value");
+
+            txtBoxDataStartAddr.Text = str_data_address;
+            txtBoxDataSize.Text = str_data_size;
+            txtBoxTriggerAddr.Text = str_trig_var_addr;
+            txtBoxTriggerValue.Text = str_trig_var_value;
+            comboBoxTrigSize.Text = str_trig_var_size;
+        }
+
+        void AppSaveSettings()
+        {
+            if (SettingsHandlingObj == null)
+                return;
+
+            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_address", txtBoxDataStartAddr.Text);
+            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_size", txtBoxDataSize.Text);
+
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_address", txtBoxTriggerAddr.Text);
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_size", comboBoxTrigSize.Text);
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_value", txtBoxTriggerValue.Text);
+            
+
+            SettingsHandlingObj.SaveSettings();
         }
     }
 }

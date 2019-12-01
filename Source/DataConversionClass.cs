@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MCUCapture
 {
+    /// <summary>
+    /// Conversion of data
+    /// </summary>
     class DataConversionClass
     {
         //one data item is containing several values

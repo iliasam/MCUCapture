@@ -26,8 +26,16 @@ namespace MCUCapture
             if (File.Exists(path) == false)
                 return;
 
-            var elf = ELFReader.Load(path);
-            var symtab = (ISymbolTable)elf.GetSection(".symtab");
+            ISymbolTable symtab;
+            try
+            {
+                var elf = ELFReader.Load(path);
+                symtab = (ISymbolTable)elf.GetSection(".symtab");
+            }
+            catch (Exception)
+            {
+                return;
+            }
 
             MemoryTable = new List<MemoryTableItem>();
             foreach (var item in symtab.Entries)

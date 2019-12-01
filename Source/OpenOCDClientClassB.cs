@@ -6,6 +6,9 @@ using TentacleSoftware.Telnet;
 
 namespace MCUCapture
 {
+    /// <summary>
+    /// Comanication with OpenOCD
+    /// </summary>
     class OpenOCDClientClassB
     {
         TelnetClient client;
@@ -31,6 +34,9 @@ namespace MCUCapture
 
         CmdReadMemoryClass CmdReadMemoryObj = new CmdReadMemoryClass();
 
+        /// <summary>
+        /// This callback if used to send data that was received after "MemoryRead" command
+        /// </summary>
         public Action<byte[]> MemoryReadDataCallback;
 
         public bool MCUHalted = false;
@@ -87,6 +93,10 @@ namespace MCUCapture
             CmdReadMemoryObj.DataParsingEndCallback += DataParsingEndCallback;
         }
 
+        /// <summary>
+        /// End of processing data block
+        /// </summary>
+        /// <param name="data"></param>
         void DataParsingEndCallback(byte[] data)
         {
             MemoryReadDataCallback?.Invoke(data);
