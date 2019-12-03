@@ -27,6 +27,12 @@ namespace MCUCapture
 
         public void ParseLine(string rxData)
         {
+            if (rxData.Contains("ERROR"))
+            {
+                bytesList.Clear();
+                return;
+            }
+
             if (rxData.Contains("0x") && rxData.Contains(":"))
             {
                 byte[] bytes = ParseHexMemoryData(rxData);
