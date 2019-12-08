@@ -54,6 +54,10 @@ namespace MCUCapture
             {
                 dataSavingControl1.SaveData(rxData);
             }
+            else if (SelectedTabPage == 2)
+            {
+                bwImageViewControl1.ProcessData(rxData);
+            }
 
             DataReceivedCnt++;
             Invoke((MethodInvoker)(() =>
@@ -184,9 +188,11 @@ namespace MCUCapture
 
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
-            plotControl1.SaveSettings();
             AppSaveSettings();
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(100);
+            plotControl1.SaveSettings();
+            System.Threading.Thread.Sleep(100);
+            bwImageViewControl1.SaveSettings();
         }
 
         private void button1_Click_1(object sender, EventArgs e)

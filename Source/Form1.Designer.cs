@@ -64,15 +64,17 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPagePlot = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPageDataSaving = new System.Windows.Forms.TabPage();
             this.plotControl1 = new MCUCapture.PlotControl();
+            this.tabPageDataSaving = new System.Windows.Forms.TabPage();
             this.dataSavingControl1 = new MCUCapture.DataSavingControl();
+            this.tabPageBWImage = new System.Windows.Forms.TabPage();
+            this.bwImageViewControl1 = new MCUCapture.BWImageViewControl();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPagePlot.SuspendLayout();
             this.tabPageDataSaving.SuspendLayout();
+            this.tabPageBWImage.SuspendLayout();
             this.SuspendLayout();
             // 
             // statusStrip1
@@ -280,6 +282,7 @@
             this.button2.TabIndex = 13;
             this.button2.Text = "wp info";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
@@ -291,6 +294,7 @@
             this.button1.TabIndex = 12;
             this.button1.Text = "test";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
             // btnHaltMCU
@@ -415,7 +419,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPagePlot);
             this.tabControl1.Controls.Add(this.tabPageDataSaving);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPageBWImage);
             this.tabControl1.Location = new System.Drawing.Point(117, 12);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
@@ -435,16 +439,14 @@
             this.tabPagePlot.Text = "Plot";
             this.tabPagePlot.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // plotControl1
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(772, 509);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Testing";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.plotControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plotControl1.Location = new System.Drawing.Point(2, 2);
+            this.plotControl1.Margin = new System.Windows.Forms.Padding(2);
+            this.plotControl1.Name = "plotControl1";
+            this.plotControl1.Size = new System.Drawing.Size(768, 505);
+            this.plotControl1.TabIndex = 0;
             // 
             // tabPageDataSaving
             // 
@@ -457,21 +459,34 @@
             this.tabPageDataSaving.Text = "Data Saving";
             this.tabPageDataSaving.UseVisualStyleBackColor = true;
             // 
-            // plotControl1
-            // 
-            this.plotControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plotControl1.Location = new System.Drawing.Point(2, 2);
-            this.plotControl1.Margin = new System.Windows.Forms.Padding(2);
-            this.plotControl1.Name = "plotControl1";
-            this.plotControl1.Size = new System.Drawing.Size(768, 505);
-            this.plotControl1.TabIndex = 0;
-            // 
             // dataSavingControl1
             // 
             this.dataSavingControl1.Location = new System.Drawing.Point(6, 6);
             this.dataSavingControl1.Name = "dataSavingControl1";
             this.dataSavingControl1.Size = new System.Drawing.Size(503, 200);
             this.dataSavingControl1.TabIndex = 0;
+            // 
+            // tabPageBWImage
+            // 
+            this.tabPageBWImage.Controls.Add(this.bwImageViewControl1);
+            this.tabPageBWImage.Location = new System.Drawing.Point(4, 22);
+            this.tabPageBWImage.Margin = new System.Windows.Forms.Padding(2);
+            this.tabPageBWImage.Name = "tabPageBWImage";
+            this.tabPageBWImage.Padding = new System.Windows.Forms.Padding(2);
+            this.tabPageBWImage.Size = new System.Drawing.Size(772, 509);
+            this.tabPageBWImage.TabIndex = 1;
+            this.tabPageBWImage.Text = "BW Image View";
+            this.tabPageBWImage.UseVisualStyleBackColor = true;
+            // 
+            // bwImageViewControl1
+            // 
+            this.bwImageViewControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.bwImageViewControl1.Location = new System.Drawing.Point(8, 6);
+            this.bwImageViewControl1.Name = "bwImageViewControl1";
+            this.bwImageViewControl1.Size = new System.Drawing.Size(756, 480);
+            this.bwImageViewControl1.TabIndex = 0;
             // 
             // Form1
             // 
@@ -493,6 +508,7 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPagePlot.ResumeLayout(false);
             this.tabPageDataSaving.ResumeLayout(false);
+            this.tabPageBWImage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -510,7 +526,7 @@
         private System.Windows.Forms.Button btnManualRead;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPagePlot;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageBWImage;
         private System.Windows.Forms.CheckBox chkIsBigEndian;
         private System.Windows.Forms.Button btnWaitEndWatchpoint;
         private System.Windows.Forms.Button btnResumeMCU;
@@ -537,6 +553,7 @@
         private System.Windows.Forms.ToolStripStatusLabel lblSelectedTriggerELFItem;
         private System.Windows.Forms.TabPage tabPageDataSaving;
         private DataSavingControl dataSavingControl1;
+        private BWImageViewControl bwImageViewControl1;
     }
 }
 
