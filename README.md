@@ -3,11 +3,11 @@ This Windows utility plot array data from MCU RAM. Instead of utilities like "ST
 It could be useful for displaying data captured by ADC, and so on. Supported saving captured array data to file.  
 Also this utility could be used for capturing B/W screnshots from MCU framebuffer.  
   
-Utiliny screenshot:
+Utility screenshot:
 ![Alt text](Screenshots/picture1.png?raw=true "Image")  
   
 This utility is using OpenOCD connection to the MCU. Connection to the OpenOCD is made by Telnet at 4444 port.  
-I made a special patched version of OpenOCD to get value watchpoint support for Cortex-M. This is needed for "Capture Trigger" functionality.  
+I made a special patched version of OpenOCD to get value watchpoint support for Cortex-M. This is needed for "Capture Trigger" functionality. You can download it here: https://yadi.sk/d/tDvl2aGxWSdeHg    
 Example of starting OpenOCD for STM32F4: "openocd -d2 -f interface/stlink.cfg -f target/stm32f4x.cfg"  
 
 ## Utility usage:  
