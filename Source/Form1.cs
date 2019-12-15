@@ -36,6 +36,8 @@ namespace MCUCapture
             {
                 SettingsHandlingObj = new SettingsHandlingClass(settings_file_path);
                 ReadSavedSettings();
+
+                bwImageViewControl1.InitSavingSystem(ref SettingsHandlingObj);
             }
             else
             {
@@ -189,10 +191,24 @@ namespace MCUCapture
         private void Form1_FormClosing_1(object sender, FormClosingEventArgs e)
         {
             AppSaveSettings();
-            System.Threading.Thread.Sleep(100);
             plotControl1.SaveSettings();
-            System.Threading.Thread.Sleep(100);
             bwImageViewControl1.SaveSettings();
+        }
+
+        void AppSaveSettings()
+        {
+            if (SettingsHandlingObj == null)
+                return;
+
+            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_address", txtBoxDataStartAddr.Text);
+            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_size", txtBoxDataSize.Text);
+
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_address", txtBoxTriggerAddr.Text);
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_size", comboBoxTrigSize.Text);
+            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_value", txtBoxTriggerValue.Text);
+
+
+            SettingsHandlingObj.SaveSettings();
         }
 
         private void button1_Click_1(object sender, EventArgs e)
@@ -239,20 +255,6 @@ namespace MCUCapture
             comboBoxTrigSize.Text = str_trig_var_size;
         }
 
-        void AppSaveSettings()
-        {
-            if (SettingsHandlingObj == null)
-                return;
 
-            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_address", txtBoxDataStartAddr.Text);
-            SettingsHandlingObj.AddSetting("DATA_SETTINGS", "data_size", txtBoxDataSize.Text);
-
-            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_address", txtBoxTriggerAddr.Text);
-            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_var_size", comboBoxTrigSize.Text);
-            SettingsHandlingObj.AddSetting("TRIGGER_SETTINGS", "trigger_value", txtBoxTriggerValue.Text);
-            
-
-            SettingsHandlingObj.SaveSettings();
-        }
     }
 }

@@ -16,7 +16,7 @@ namespace MCUCapture
     public partial class BWImageViewControl : UserControl
     {
         ParseBWImageDataClass ParseBWImageDataObj;
-        SettingsHandlingClass SettingsHandlingObj;
+        SettingsHandlingClass SettingsHandlingRefObj;
 
         Color ImageBackColor = Color.LightGray;
         Color ImageActiveColor = Color.Black;
@@ -32,14 +32,13 @@ namespace MCUCapture
 
             ParseBWImageDataObj.SetImageSize(
                 (int)nudImageWidth.Value, (int)nudImageHeight.Value);
+        }
 
-            string settings_file_path = Application.StartupPath + @"\config.ini";
-            if (File.Exists(settings_file_path))
-            {
-                SettingsHandlingObj = new SettingsHandlingClass(settings_file_path);
-                ReadSavedSettings();
-                ParseBWImageDataObj.SetColors(ImageBackColor, ImageActiveColor);
-            }
+        public void InitSavingSystem(ref SettingsHandlingClass settingsHandlingObj)
+        {
+            SettingsHandlingRefObj = settingsHandlingObj;
+            ReadSavedSettings();
+            ParseBWImageDataObj.SetColors(ImageBackColor, ImageActiveColor);
         }
 
         public void ProcessData(byte[] rxData)
@@ -102,11 +101,11 @@ namespace MCUCapture
 
         void ReadSavedSettings()
         {
-            string str_width = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "width");
-            string str_height = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "height");
+            string str_width = SettingsHandlingRefObj.GetSetting("BW_IMAGE_SETTINGS", "width");
+            string str_height = SettingsHandlingRefObj.GetSetting("BW_IMAGE_SETTINGS", "height");
 
-            string str_back_color = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "back_color");
-            string str_active_color = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "active_color");
+            string str_back_color = SettingsHandlingRefObj.GetSetting("BW_IMAGE_SETTINGS", "back_color");
+            string str_active_color = SettingsHandlingRefObj.GetSetting("BW_IMAGE_SETTINGS", "active_color");
 
             ImageBackColor = ColorTranslator.FromHtml(str_back_color);
             ImageActiveColor = ColorTranslator.FromHtml(str_active_color);
@@ -122,18 +121,18 @@ namespace MCUCapture
 
         public void SaveSettings()
         {
-            if (SettingsHandlingObj == null)
+            if (SettingsHandlingRefObj == null)
                 return;
 
-            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "width", nudImageWidth.Value.ToString());
-            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "height", nudImageHeight.Value.ToString());
+            SettingsHandlingRefObj.AddSetting("BW_IMAGE_SETTINGS", "width", nudImageWidth.Value.ToString());
+            SettingsHandlingRefObj.AddSetting("BW_IMAGE_SETTINGS", "height", nudImageHeight.Value.ToString());
 
-            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "back_color",
+            SettingsHandlingRefObj.AddSetting("BW_IMAGE_SETTINGS", "back_color",
                 ConvertColorToHex(ImageBackColor));
-            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "active_color",
+            SettingsHandlingRefObj.AddSetting("BW_IMAGE_SETTINGS", "active_color",
                 ConvertColorToHex(ImageActiveColor));
 
-            SettingsHandlingObj.SaveSettings();
+            SettingsHandlingRefObj.SaveSettings();
         }
 
         private void btnSelectBackgroundColor_Click(object sender, EventArgs e)

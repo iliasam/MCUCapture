@@ -498,7 +498,7 @@
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "MCUCapture";
+            this.Text = "MCUCapture v1.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing_1);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.statusStrip1.ResumeLayout(false);

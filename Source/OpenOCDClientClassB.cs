@@ -131,6 +131,7 @@ namespace MCUCapture
                     DateTime start = DateTime.Now;
                     while ((IsConnected == false) && ((DateTime.Now - start).TotalMilliseconds < 3000))
                     {
+                        System.Threading.Thread.Sleep(20);
                     }
 
                     while ((client != null) && IsConnected)
@@ -142,6 +143,7 @@ namespace MCUCapture
                             System.Diagnostics.Debug.WriteLine("TX: " + txCommand);
                             client.Send(txCommand + "\r\n");
                         }
+                        System.Threading.Thread.Sleep(20);
                     }
                 }
                 catch (Exception)
@@ -161,7 +163,7 @@ namespace MCUCapture
             if (message.Length == 0)
                 return;
 
-            System.Diagnostics.Debug.WriteLine("RX: " + message);
+            //System.Diagnostics.Debug.WriteLine("RX: " + message);
 
             if (message.Contains(">") && (message.Length < 5))
             {
