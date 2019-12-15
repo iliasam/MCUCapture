@@ -48,7 +48,28 @@ namespace MCUCapture
         {
             try
             {
-                BinaryWriter writer = new BinaryWriter(File.Open(FileSavePath, FileMode.Create));
+                string tmp_path = FileSavePath;
+                if (chkAddTime.Checked)
+                {
+                    int tmp_pos = FileSavePath.Length - 4;
+                    string extension = FileSavePath.Substring(tmp_pos, 4);
+
+                    tmp_path = FileSavePath.Substring(0, tmp_pos);
+                    tmp_path += "_" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + extension;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        UpdateDisplayedFilename(tmp_path);
+                    }));
+                }
+                else
+                {
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        UpdateDisplayedFilename();
+                    }));
+                }
+
+                BinaryWriter writer = new BinaryWriter(File.Open(tmp_path, FileMode.Create));
                 writer.Write(rxData);
                 writer.Close();
                 SavedCounter++;
@@ -59,9 +80,12 @@ namespace MCUCapture
             }
         }
 
-        void UpdateDisplayedFilename()
+        void UpdateDisplayedFilename(string path = "")
         {
             string visPath = FileSavePath;
+            if (path.Length > 0)
+                visPath = path;
+
             if (visPath.Length > 60)
                 visPath = "..." + visPath.Substring(visPath.Length - 60, 60);
             lblSelectedFileName.Text = "File Name: " + visPath;

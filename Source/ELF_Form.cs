@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MCUCapture
 {
+    // Used for selecting address from ELF file
     public partial class ELF_Form : Form
     {
 
@@ -45,8 +40,7 @@ namespace MCUCapture
         private void btnOpenFile_Click(object sender, EventArgs e)
         {
             string path = "";
-            // openFileDialog1.Filter = "elf (*.elf)|*.elf|out (*.out)|*.out|All files (*.*)|*.*";
-            openFileDialog1.Filter = "elf, out, axf |*.elf;*.out;*.axf |All files (*.*)|*.*";
+            openFileDialog1.Filter = "elf, out, axf |*.elf;*.out;*.axf|All files (*.*)|*.*";
 
             if (openFileDialog1.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
@@ -61,8 +55,6 @@ namespace MCUCapture
 
         void ProcessFile(string path)
         {
-            // ELFParserObj.UpdateTableFromFile("test.out");
-
             string visPath = path;
             if (visPath.Length > 60)
                 visPath = "..." + visPath.Substring(visPath.Length - 60, 60);

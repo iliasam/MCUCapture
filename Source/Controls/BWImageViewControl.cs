@@ -8,9 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing.Imaging;
 
 namespace MCUCapture
 {
+    // Display BW image
     public partial class BWImageViewControl : UserControl
     {
         ParseBWImageDataClass ParseBWImageDataObj;
@@ -18,6 +20,10 @@ namespace MCUCapture
 
         Color ImageBackColor = Color.LightGray;
         Color ImageActiveColor = Color.Black;
+
+        Bitmap LastImage;
+
+        string FileSavePath = "";
 
         public BWImageViewControl()
         {
@@ -32,20 +38,22 @@ namespace MCUCapture
             {
                 SettingsHandlingObj = new SettingsHandlingClass(settings_file_path);
                 ReadSavedSettings();
+                ParseBWImageDataObj.SetColors(ImageBackColor, ImageActiveColor);
             }
         }
 
-
-
         public void ProcessData(byte[] rxData)
         {
-            Bitmap img = ParseBWImageDataObj.ParseData(rxData);
+            Bitmap img = ParseBWImageDataObj.ParseData(
+                rxData, ParseBWImageDataClass.BWImageType.TYPE1);
+
             if (img != null)
             {
                 Invoke((MethodInvoker)(() =>
                 {
                     lblErrorState.Visible = false;
                     imageBox1.Image = img;
+                    LastImage = img;
                 }));
             }
             else
@@ -97,8 +105,19 @@ namespace MCUCapture
             string str_width = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "width");
             string str_height = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "height");
 
+            string str_back_color = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "back_color");
+            string str_active_color = SettingsHandlingObj.GetSetting("BW_IMAGE_SETTINGS", "active_color");
+
+            ImageBackColor = ColorTranslator.FromHtml(str_back_color);
+            ImageActiveColor = ColorTranslator.FromHtml(str_active_color);
+
             nudImageWidth.Value = Convert.ToDecimal(str_width);
             nudImageHeight.Value = Convert.ToDecimal(str_height);
+        }
+
+        private static String ConvertColorToHex(System.Drawing.Color c)
+        {
+            return "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
         }
 
         public void SaveSettings()
@@ -108,6 +127,11 @@ namespace MCUCapture
 
             SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "width", nudImageWidth.Value.ToString());
             SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "height", nudImageHeight.Value.ToString());
+
+            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "back_color",
+                ConvertColorToHex(ImageBackColor));
+            SettingsHandlingObj.AddSetting("BW_IMAGE_SETTINGS", "active_color",
+                ConvertColorToHex(ImageActiveColor));
 
             SettingsHandlingObj.SaveSettings();
         }
@@ -128,6 +152,47 @@ namespace MCUCapture
                 ImageActiveColor = colorDialog1.Color;
             }
             ParseBWImageDataObj.SetColors(ImageBackColor, ImageActiveColor);
+        }
+
+        private void btnSelectFile_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "PNG file|*.png|All files|*.*";
+            saveFileDialog1.Title = "Select file for saving data";
+            saveFileDialog1.ShowDialog();
+
+            if (saveFileDialog1.FileName != "")
+            {
+                if (FileSavePath != saveFileDialog1.FileName)
+                {
+                    FileSavePath = saveFileDialog1.FileName;
+                }
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string tmp_path = FileSavePath;
+                if (chkAddTime.Checked)
+                {
+                    int tmp_pos = FileSavePath.Length - 4;
+                    string extension = FileSavePath.Substring(tmp_pos, 4);
+
+                    tmp_path = FileSavePath.Substring(0, tmp_pos);
+                    tmp_path += "_" + DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + extension;
+                }
+
+                if (LastImage != null)
+                {
+                    LastImage.Save(tmp_path, ImageFormat.Png);
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }//end of class
 }

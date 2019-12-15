@@ -65,18 +65,18 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BWImageViewControl.cs">
+    <Compile Include="Controls\BWImageViewControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BWImageViewControl.Designer.cs">
+    <Compile Include="Controls\BWImageViewControl.Designer.cs">
       <DependentUpon>BWImageViewControl.cs</DependentUpon>
     </Compile>
     <Compile Include="CmdReadMemoryClass.cs" />
     <Compile Include="DataConversionClass.cs" />
-    <Compile Include="DataSavingControl.cs">
+    <Compile Include="Controls\DataSavingControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="DataSavingControl.Designer.cs">
+    <Compile Include="Controls\DataSavingControl.Designer.cs">
       <DependentUpon>DataSavingControl.cs</DependentUpon>
     </Compile>
     <Compile Include="ELFParserClass.cs" />
@@ -94,19 +94,19 @@
     </Compile>
     <Compile Include="OpenOCDClientClassB.cs" />
     <Compile Include="ParseBWImageDataClass.cs" />
-    <Compile Include="PlotControl.cs">
+    <Compile Include="Controls\PlotControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="PlotControl.Designer.cs">
+    <Compile Include="Controls\PlotControl.Designer.cs">
       <DependentUpon>PlotControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SettingsHandlingClass.cs" />
-    <EmbeddedResource Include="BWImageViewControl.resx">
+    <EmbeddedResource Include="Controls\BWImageViewControl.resx">
       <DependentUpon>BWImageViewControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DataSavingControl.resx">
+    <EmbeddedResource Include="Controls\DataSavingControl.resx">
       <DependentUpon>DataSavingControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="ELF_Form.resx">
@@ -115,7 +115,7 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PlotControl.resx">
+    <EmbeddedResource Include="Controls\PlotControl.resx">
       <DependentUpon>PlotControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

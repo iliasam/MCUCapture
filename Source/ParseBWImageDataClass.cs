@@ -18,6 +18,13 @@ namespace MCUCapture
 
         Bitmap ProcImage;
 
+        public enum BWImageType
+        {
+            TYPE1 = 0,
+            TYPE2, //for future
+        };
+ 
+        // Set image colors
         public void SetColors(Color back, Color active)
         {
             ImageBackColor = back;
@@ -33,7 +40,7 @@ namespace MCUCapture
             Height = height;
         }
 
-        public Bitmap ParseData(byte[] data)
+        public Bitmap ParseData(byte[] data, BWImageType imageType)
         {
             int exp_bytes_cnt = Width * Height / 8;//every byte is 8 pixels
             if (data.Length != exp_bytes_cnt)
@@ -46,13 +53,14 @@ namespace MCUCapture
             // Processing every byte of the received data
             for (int i = 0; i < data.Length; i++)
             {
-                FillEightPixels(data[i], i);
+                if (imageType == BWImageType.TYPE1)
+                    FillEightPixelsType1(data[i], i);
             }
 
             return ProcImage;
         }
 
-        void FillEightPixels(byte value, int position)
+        void FillEightPixelsType1(byte value, int position)
         {
             //bits are vertical
 

@@ -34,6 +34,7 @@
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.lblSaveCounter = new System.Windows.Forms.Label();
+            this.chkAddTime = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // lblSelectedFileName
@@ -70,10 +71,23 @@
             this.lblSaveCounter.TabIndex = 2;
             this.lblSaveCounter.Text = "Save Counter: N/A";
             // 
+            // chkAddTime
+            // 
+            this.chkAddTime.AutoSize = true;
+            this.chkAddTime.Checked = true;
+            this.chkAddTime.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAddTime.Location = new System.Drawing.Point(15, 97);
+            this.chkAddTime.Name = "chkAddTime";
+            this.chkAddTime.Size = new System.Drawing.Size(175, 17);
+            this.chkAddTime.TabIndex = 3;
+            this.chkAddTime.Text = "Add Date and Time to Filename";
+            this.chkAddTime.UseVisualStyleBackColor = true;
+            // 
             // DataSavingControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.chkAddTime);
             this.Controls.Add(this.lblSaveCounter);
             this.Controls.Add(this.btnSelectFile);
             this.Controls.Add(this.lblSelectedFileName);
@@ -91,5 +105,6 @@
         private System.Windows.Forms.SaveFileDialog saveFileDialog1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label lblSaveCounter;
+        private System.Windows.Forms.CheckBox chkAddTime;
     }
 }
