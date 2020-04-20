@@ -69,6 +69,8 @@ namespace MCUCapture
         // Value of Value Watchpoint Variable
         public UInt32 WPValueTrigger = 0;
 
+        int TXTimeoutCounter = 0;
+
         enum CommandType
         {
             ConnectionStart,
@@ -142,6 +144,20 @@ namespace MCUCapture
                             ReadyForSend = false;
                             System.Diagnostics.Debug.WriteLine("TX: " + txCommand);
                             client.Send(txCommand + "\r\n");
+                            TXTimeoutCounter = 0;
+                        }
+                        else
+                        {
+                            if (TxCommandsQueue.Count > 0)
+                            {
+                                TXTimeoutCounter++;
+                                if (TXTimeoutCounter > 150)
+                                {
+                                    TXTimeoutCounter = 0;
+                                    IsConnected = false;
+                                    break;
+                                }
+                            }
                         }
                         System.Threading.Thread.Sleep(20);
                     }
@@ -163,9 +179,13 @@ namespace MCUCapture
             if (message.Length == 0)
                 return;
 
-            //System.Diagnostics.Debug.WriteLine("RX: " + message);
+            System.Diagnostics.Debug.WriteLine("RX: " + message);
 
             if (message.Contains(">") && (message.Length < 5))
+            {
+                ReadyForSend = true;
+            }
+            else if (message.Contains("accepting"))
             {
                 ReadyForSend = true;
             }
