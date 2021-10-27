@@ -13,7 +13,7 @@ Example of starting OpenOCD for STM32F4: "openocd -d2 -f interface/stlink.cfg -f
 ## Utility usage:  
 #### Getting plot data:  
 1. Enter array address and its length to "Start address" and "Array size, bytes" fields.
-2. Press "Manual Read" button to capture data from MCU. There is no auto halt function and the readout is slow, so the is no synchronization during data readout.  
+2. Press "Manual Read" button to capture data from MCU. There is no auto halt function and the readout is slow, so there is no synchronization during data readout.  
 Pressing "Wait End WP" button will set write watchpoint to the the last byte of the array. When watchpoint event happens, 
 the MCU will enter to halt mode, and utility will automatically read data from RAM. After completion of that process watchpoint will be removed.  
 This mode is not working when data is written to the RAM by DMA.  
