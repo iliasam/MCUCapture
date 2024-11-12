@@ -1,7 +1,7 @@
 # MCUCapture
 This Windows utility plot array data from MCU RAM. Instead of utilities like "STM Studio", this utility is working with single RAM array. 
-It could be useful for displaying data captured by ADC, and so on. Supported saving captured array data to file.  
-Also this utility could be used for capturing B/W screnshots from MCU framebuffer.  
+It can be useful for displaying data captured by ADC, and so on. Supported saving captured array data to file.  
+Also this utility can be used for capturing B/W screnshots from MCU framebuffer.  
   
 Utility screenshot:
 ![Alt text](Screenshots/picture1.png?raw=true "Image")  
@@ -18,11 +18,11 @@ Pressing "Wait End WP" button will set write watchpoint to the the last byte of 
 the MCU will enter to halt mode, and utility will automatically read data from RAM. After completion of that process watchpoint will be removed.  
 This mode is not working when data is written to the RAM by DMA.  
 Pressing "Wait Trigger" button will set value watchpoint to the address entered to "Variable address" field. This mode is similar to previous mode, 
-but a certain variable could be used as a "trigger".
+but a certain variable can be used as a "trigger".
 
 You can set data structure by "Data Structure" group. It is useful when data is captured by ADC from several channels.  
 
-Array and trigger value addresses could be taken from *.elf, *.out, *.afx files:  
+Array and trigger value addresses can be taken from *.elf, *.out, *.afx files:  
 ![Alt text](Screenshots/picture3.png?raw=true "Image")  
 
 Select "Data Saving" tab for saving captured data to file. Data capture is started as previously described.  
