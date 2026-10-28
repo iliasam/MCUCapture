@@ -255,6 +255,10 @@ namespace MCUCapture
             comboBoxTrigSize.Text = str_trig_var_size;
         }
 
-
+        private void btnOpenOCD_Click(object sender, EventArgs e)
+        {
+            FormOpenOCD_Selector openOCDSelectorForm = new FormOpenOCD_Selector();
+            openOCDSelectorForm.ShowDialog();
+        }
     }
 }

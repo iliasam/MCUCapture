@@ -69,6 +69,7 @@
             this.dataSavingControl1 = new MCUCapture.DataSavingControl();
             this.tabPageBWImage = new System.Windows.Forms.TabPage();
             this.bwImageViewControl1 = new MCUCapture.BWImageViewControl();
+            this.btnOpenOCD = new System.Windows.Forms.Button();
             this.statusStrip1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -89,7 +90,7 @@
             this.lblWatchpointActive,
             this.lblSelectedELFItem,
             this.lblSelectedTriggerELFItem});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 549);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 589);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Padding = new System.Windows.Forms.Padding(1, 0, 10, 0);
             this.statusStrip1.Size = new System.Drawing.Size(897, 22);
@@ -137,7 +138,7 @@
             // lblSelectedTriggerELFItem
             // 
             this.lblSelectedTriggerELFItem.Name = "lblSelectedTriggerELFItem";
-            this.lblSelectedTriggerELFItem.Size = new System.Drawing.Size(149, 17);
+            this.lblSelectedTriggerELFItem.Size = new System.Drawing.Size(148, 17);
             this.lblSelectedTriggerELFItem.Text = "Curr. Trigger ELF Item: N/A";
             // 
             // timerUpdateGUI
@@ -170,11 +171,11 @@
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.txtBoxDataStartAddr);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(7, 6);
+            this.groupBox1.Location = new System.Drawing.Point(7, 41);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(2);
-            this.groupBox1.Size = new System.Drawing.Size(104, 537);
+            this.groupBox1.Size = new System.Drawing.Size(104, 541);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Data Source";
@@ -424,7 +425,7 @@
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(780, 535);
+            this.tabControl1.Size = new System.Drawing.Size(780, 575);
             this.tabControl1.TabIndex = 2;
             // 
             // tabPagePlot
@@ -434,7 +435,7 @@
             this.tabPagePlot.Margin = new System.Windows.Forms.Padding(2);
             this.tabPagePlot.Name = "tabPagePlot";
             this.tabPagePlot.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPagePlot.Size = new System.Drawing.Size(772, 509);
+            this.tabPagePlot.Size = new System.Drawing.Size(772, 549);
             this.tabPagePlot.TabIndex = 0;
             this.tabPagePlot.Text = "Plot";
             this.tabPagePlot.UseVisualStyleBackColor = true;
@@ -445,7 +446,7 @@
             this.plotControl1.Location = new System.Drawing.Point(2, 2);
             this.plotControl1.Margin = new System.Windows.Forms.Padding(2);
             this.plotControl1.Name = "plotControl1";
-            this.plotControl1.Size = new System.Drawing.Size(768, 505);
+            this.plotControl1.Size = new System.Drawing.Size(768, 545);
             this.plotControl1.TabIndex = 0;
             // 
             // tabPageDataSaving
@@ -454,7 +455,7 @@
             this.tabPageDataSaving.Location = new System.Drawing.Point(4, 22);
             this.tabPageDataSaving.Name = "tabPageDataSaving";
             this.tabPageDataSaving.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDataSaving.Size = new System.Drawing.Size(772, 509);
+            this.tabPageDataSaving.Size = new System.Drawing.Size(772, 549);
             this.tabPageDataSaving.TabIndex = 2;
             this.tabPageDataSaving.Text = "Data Saving";
             this.tabPageDataSaving.UseVisualStyleBackColor = true;
@@ -473,7 +474,7 @@
             this.tabPageBWImage.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageBWImage.Name = "tabPageBWImage";
             this.tabPageBWImage.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageBWImage.Size = new System.Drawing.Size(772, 509);
+            this.tabPageBWImage.Size = new System.Drawing.Size(772, 549);
             this.tabPageBWImage.TabIndex = 1;
             this.tabPageBWImage.Text = "BW Image View";
             this.tabPageBWImage.UseVisualStyleBackColor = true;
@@ -485,20 +486,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.bwImageViewControl1.Location = new System.Drawing.Point(8, 6);
             this.bwImageViewControl1.Name = "bwImageViewControl1";
-            this.bwImageViewControl1.Size = new System.Drawing.Size(756, 480);
+            this.bwImageViewControl1.Size = new System.Drawing.Size(756, 520);
             this.bwImageViewControl1.TabIndex = 0;
+            // 
+            // btnOpenOCD
+            // 
+            this.btnOpenOCD.Location = new System.Drawing.Point(10, 4);
+            this.btnOpenOCD.Name = "btnOpenOCD";
+            this.btnOpenOCD.Size = new System.Drawing.Size(101, 33);
+            this.btnOpenOCD.TabIndex = 3;
+            this.btnOpenOCD.Text = "OpenOCD";
+            this.btnOpenOCD.UseVisualStyleBackColor = true;
+            this.btnOpenOCD.Click += new System.EventHandler(this.btnOpenOCD_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(897, 571);
+            this.ClientSize = new System.Drawing.Size(897, 611);
+            this.Controls.Add(this.btnOpenOCD);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "MCUCapture v1.0";
+            this.Text = "MCUCapture v1.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing_1);
             this.Shown += new System.EventHandler(this.Form1_Shown);
             this.statusStrip1.ResumeLayout(false);
@@ -554,6 +566,7 @@
         private System.Windows.Forms.TabPage tabPageDataSaving;
         private DataSavingControl dataSavingControl1;
         private BWImageViewControl bwImageViewControl1;
+        private System.Windows.Forms.Button btnOpenOCD;
     }
 }
 
